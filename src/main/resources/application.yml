@@ -1,0 +1,15 @@
+server:
+  port: 8080
+
+app.task:
+    endpointMessage: Hello, world!
+
+---
+spring.profiles: dev
+server:
+  port: 8080
+
+---
+spring.profiles: prod
+server:
+  port: 9090

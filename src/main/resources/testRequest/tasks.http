@@ -1,0 +1,16 @@
+POST localhost:8080
+Content-Type: application/json
+
+{
+    "title":"zadanie domowe M2",
+    "project":"Kurs Springa"
+}
+###
+POST localhost:8080
+Content-Type: application/json
+
+{
+  "title":"youtube od Przemka Bykowskiego",
+  "project":"Kurs Springa"
+}
+###
