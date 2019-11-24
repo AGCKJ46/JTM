@@ -1,10 +1,8 @@
 package net.ckj46.JTM;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class Task {
     private String title;
     private int prio;
