@@ -7,5 +7,6 @@ import lombok.Setter;
 @Setter
 public class Task {
     private String title;
+    private int prio;
     private String project;
 }
