@@ -3,7 +3,8 @@ Content-Type: application/json
 
 {
     "title":"zadanie domowe M2",
-    "project":"Kurs Springa"
+    "project":"Kurs Springa",
+    "prio":1
 }
 ###
 POST localhost:8080
@@ -11,6 +12,7 @@ Content-Type: application/json
 
 {
   "title":"youtube od Przemka Bykowskiego",
-  "project":"Kurs Springa"
+  "project":"Kurs Springa",
+  "prio":2
 }
 ###

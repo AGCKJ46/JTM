@@ -25,5 +25,4 @@ public class TaskController {
     public void addTasks(@RequestBody Task task){
         tasksRepository.add(task);
     }
-
 }
