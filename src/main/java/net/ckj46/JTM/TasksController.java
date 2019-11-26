@@ -23,15 +23,22 @@ public class TasksController {
         return tasksRepository.fetchAll();
     }
 
+    @GetMapping(path = "/{id}")
+    public Task getTaskById(@PathVariable Long id){
+        log.info("Fetching a task: {}",id);
+        return tasksRepository.fetchById(id);
+    }
+
     @PostMapping
     public void addTask(@RequestBody Task task){
         log.info("Adding new task: {}", task.toString());
         tasksRepository.add(task);
     }
 
-    @DeleteMapping
-    public void deleteTask(){
-        log.info("Deleting a task ...");
+    @DeleteMapping(path = "/{id}")
+    public void deletingTaskById(@PathVariable Long id){
+        log.info("Deleting a task: {}",id);
+        tasksRepository.deletingById(id);
     }
 
     @PutMapping
