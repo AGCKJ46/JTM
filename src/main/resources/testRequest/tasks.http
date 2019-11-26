@@ -1,4 +1,4 @@
-POST localhost:8080
+POST localhost:8080/api/tasks
 Content-Type: application/json
 
 {
@@ -7,7 +7,7 @@ Content-Type: application/json
     "prio":1
 }
 ###
-POST localhost:8080
+POST localhost:8080/api/tasks
 Content-Type: application/json
 
 {
@@ -16,5 +16,8 @@ Content-Type: application/json
   "prio":2
 }
 ###
-GET localhost:8080
+GET localhost:8080/api/tasks
+###
+
+DELETE localhost:8080/api/tasks
 ###

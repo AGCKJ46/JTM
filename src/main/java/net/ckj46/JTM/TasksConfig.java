@@ -11,6 +11,6 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 @Data
-public class TaskConfig {
+public class TasksConfig {
     private String endpointMessage;
 }

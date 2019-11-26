@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Slf4j
-@RequestMapping(path="/")
+@RequestMapping(path="/api/tasks")
 @RestController
-public class TaskController {
+public class TasksController {
     private final TasksRepository tasksRepository;
 
     @Autowired
-    public TaskController(TasksRepository tasksRepository) {
+    public TasksController(TasksRepository tasksRepository) {
         this.tasksRepository = tasksRepository;
     }
 
@@ -24,8 +24,19 @@ public class TaskController {
     }
 
     @PostMapping
-    public void addTasks(@RequestBody Task task){
+    public void addTask(@RequestBody Task task){
         log.info("Adding new task: {}", task.toString());
         tasksRepository.add(task);
     }
+
+    @DeleteMapping
+    public void deleteTask(){
+        log.info("Deleting a task ...");
+    }
+
+    @PutMapping
+    public void updateTask(){
+        log.info("Updating a task ...");
+    }
+
 }
