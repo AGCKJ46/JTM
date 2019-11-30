@@ -7,6 +7,7 @@ Content-Type: application/json
   "project":"Kurs Springa",
   "prio":1
 }
+
 ###
 POST localhost:8080/api/tasks
 Content-Type: application/json
@@ -17,12 +18,21 @@ Content-Type: application/json
   "project":"Kurs Springa",
   "prio":2
 }
+
 ###
 GET localhost:8080/api/tasks
-###
 
+###
 DELETE localhost:8080/api/tasks/1
-###
 
-PUT localhost:8080/api/tasks
+###
+PUT localhost:8080/api/tasks/1
+Content-Type: application/json
+
+{
+  "title":"youtube od Przemka Bykowskiego",
+  "description": "dwa kursy - jeden dotyczy SpringBoot'a a drugi Springa",
+  "project":"Kurs Springa",
+  "prio":1
+}
 ###

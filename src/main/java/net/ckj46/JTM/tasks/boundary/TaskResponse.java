@@ -14,4 +14,5 @@ class TaskResponse {
     String project;
     int prio;
     LocalDateTime createdAt;
+    LocalDateTime editedAt;
 }
