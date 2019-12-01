@@ -2,8 +2,7 @@ POST localhost:8080/api/tasks
 Content-Type: application/json
 
 {
-  "id":1,
-  "title":"zadanie domowe M2",
+  "title":"zadanie domowe M3",
   "project":"Kurs Springa",
   "prio":1
 }
@@ -13,17 +12,19 @@ POST localhost:8080/api/tasks
 Content-Type: application/json
 
 {
-  "id":2,
-  "title":"youtube od Przemka Bykowskiego",
-  "project":"Kurs Springa",
-  "prio":2
+  "title":"wentylacja garażu",
+  "project":"Dom",
+  "prio":1
 }
 
 ###
 GET localhost:8080/api/tasks
 
 ###
-DELETE localhost:8080/api/tasks/1
+GET localhost:8080/api/tasks/1
+
+###
+DELETE localhost:8080/api/tasks/666
 
 ###
 PUT localhost:8080/api/tasks/2

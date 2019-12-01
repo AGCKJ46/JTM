@@ -1,5 +1,6 @@
 package net.ckj46.JTM.tasks.boundary;
 
+import com.sun.deploy.net.HttpResponse;
 import lombok.extern.slf4j.Slf4j;
 import net.ckj46.JTM.exceptions.NotFoundException;
 import net.ckj46.JTM.tasks.control.TasksService;
@@ -38,32 +39,65 @@ public class TasksController {
         tasksService.addTask("wymienić zamek w drzwiach do garażu", "", "Dom", 2);
     }
 
+    // 200 /
     @GetMapping
-    public List<TaskResponse> getTasks(@RequestParam Optional<String> query) {
+    public List<TaskResponse> getTasks(HttpServletResponse response, @RequestParam Optional<String> query) throws IOException {
         log.info("Fetching all task with query: {}", query);
-        return query.map(tasksService::filterAllByQuery)
-                .orElseGet(tasksService::fetchAll)
-                .stream()
-                .map(this::toTaskResponse)
-                .collect(Collectors.toList());
+
+        List<TaskResponse> taskResponseList = null;
+        try{
+            taskResponseList = query
+                                .map(tasksService::filterAllByQuery)
+                                .orElseGet(tasksService::fetchAll)
+                                .stream()
+                                .map(this::toTaskResponse)
+                                .collect(Collectors.toList());
+
+            response.setStatus(HttpStatus.OK.value());
+        }catch(Exception e){
+            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
+        }
+
+        return taskResponseList;
     }
 
     @GetMapping(path = "/{id}")
-    public TaskResponse getTaskById(@PathVariable Long id) {
+    public TaskResponse getTaskById(HttpServletResponse response, @PathVariable Long id) throws IOException {
         log.info("Fetching a task: {}", id);
-        return toTaskResponse(tasksRepository.fetchById(id));
+        TaskResponse taskResponse = null;
+        try{
+            taskResponse = toTaskResponse(tasksRepository.fetchById(id));
+            response.setStatus(HttpStatus.OK.value());
+        }catch(NotFoundException e) {
+            log.error("Unable to find a task: {} - error: {}", id, e.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value(), e.getMessage());
+        }
+        return taskResponse;
     }
 
     @PostMapping
-    public void addTask(@RequestBody CreateTaskRequest task) {
+    public void addTask(HttpServletResponse response, @RequestBody CreateTaskRequest task) {
         log.info("Adding new task: {}", task.toString());
         tasksService.addTask(task.title, task.description, task.project, task.prio);
+        response.setStatus(HttpStatus.CREATED.value());
     }
 
     @DeleteMapping(path = "/{id}")
-    public void deletingTaskById(@PathVariable Long id) {
+    public ResponseEntity
+    deletingTaskById(@PathVariable Long id) {
         log.info("Deleting a task: {}", id);
-        tasksRepository.deletingById(id);
+        try {
+            tasksRepository.deletingById(id);
+            log.info("Task: {} is deleted!", id);
+            return ResponseEntity
+                    .noContent()
+                    .build();
+        }catch (NotFoundException e){
+            log.error("Unable to delete task: {} - error: {}", id, e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
     }
 
     @PutMapping(path = "/{id}")

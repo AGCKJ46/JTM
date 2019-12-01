@@ -26,13 +26,14 @@ public class MemoryTasksRepository implements TasksRepository {
     @Override
     public Task fetchById(Long id) {
         return findById(id)
-                .orElseThrow(()->new IllegalArgumentException("Task: "+id+" not found!"));
+                .orElseThrow(()->new NotFoundException("Task with id: "+id+" not found!"));
     }
 
     @Override
     public void deletingById(Long id) {
-        findById(id)
-                .ifPresent(repo::remove);
+        Task task = findById(id)
+                .orElseThrow(()-> new NotFoundException("Task with id: "+id+" not found!"));
+        repo.remove(task);
     }
 
     @Override
