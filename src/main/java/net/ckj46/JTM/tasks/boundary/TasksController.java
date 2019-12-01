@@ -1,12 +1,16 @@
 package net.ckj46.JTM.tasks.boundary;
 
 import lombok.extern.slf4j.Slf4j;
+import net.ckj46.JTM.exceptions.NotFoundException;
 import net.ckj46.JTM.tasks.control.TasksService;
 import net.ckj46.JTM.tasks.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -61,9 +65,16 @@ public class TasksController {
     }
 
     @PutMapping(path = "/{id}")
-    public void updateTask(@PathVariable Long id, @RequestBody UpdateTaskRequest task ) {
+    public void updateTask(HttpServletResponse response,  @PathVariable Long id, @RequestBody UpdateTaskRequest task ) throws IOException {
         log.info("Updating a task: {}", id);
-        tasksService.updateTask(id, task.title, task.description, task.project, task.prio);
+        try {
+            tasksService.updateTask(id, task.title, task.description, task.project, task.prio);
+        }
+        catch (NotFoundException e) {
+            log.error("Failed to update task with id: {}", e);
+            response.sendError(HttpStatus.NOT_FOUND.value(), e.getMessage());
+
+        }
     }
 
     private TaskResponse toTaskResponse(Task task) {

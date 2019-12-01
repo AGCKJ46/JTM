@@ -1,5 +1,6 @@
 package net.ckj46.JTM.tasks.boundary;
 
+import net.ckj46.JTM.exceptions.NotFoundException;
 import net.ckj46.JTM.tasks.entity.Task;
 import org.springframework.stereotype.Repository;
 
@@ -36,14 +37,14 @@ public class MemoryTasksRepository implements TasksRepository {
 
     @Override
     public void update(Long id, String title, String description, String project, int prio, LocalDateTime editedAt) {
-        findById(id).ifPresent( task -> {
-                                            task.setTitle(title);
-                                            task.setDescription(description);
-                                            task.setProject(project);
-                                            task.setPrio(prio);
-                                            task.setEditedAt(editedAt);
-                                        }
-                                );
+        Task task = findById(id)
+                .orElseThrow(()-> new NotFoundException("Task with id: "+id+" not found!"));
+
+        task.setTitle(title);
+        task.setDescription(description);
+        task.setProject(project);
+        task.setPrio(prio);
+        task.setEditedAt(editedAt);
     }
 
     private Optional<Task> findById(Long id) {
