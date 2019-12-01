@@ -65,7 +65,7 @@ public class TasksController {
     }
 
     @PutMapping(path = "/{id}")
-    public void updateTask(HttpServletResponse response,  @PathVariable Long id, @RequestBody UpdateTaskRequest task ) {
+    public void updateTask(@PathVariable Long id, @RequestBody UpdateTaskRequest task ) {
         log.info("Updating a task: {}", id);
         tasksService.updateTask(id, task.title, task.description, task.project, task.prio);
     }
