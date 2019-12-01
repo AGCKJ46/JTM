@@ -7,6 +7,7 @@ import net.ckj46.JTM.tasks.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
@@ -67,7 +68,12 @@ public class TasksController {
     @PutMapping(path = "/{id}")
     public void updateTask(@PathVariable Long id, @RequestBody UpdateTaskRequest task ) {
         log.info("Updating a task: {}", id);
-        tasksService.updateTask(id, task.title, task.description, task.project, task.prio);
+        try {
+            tasksService.updateTask(id, task.title, task.description, task.project, task.prio);
+        }catch(NotFoundException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+
     }
 
     private TaskResponse toTaskResponse(Task task) {
