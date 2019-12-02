@@ -5,14 +5,18 @@ import lombok.extern.slf4j.Slf4j;
 import net.ckj46.JTM.exceptions.NotFoundException;
 import net.ckj46.JTM.tasks.control.TasksService;
 import net.ckj46.JTM.tasks.entity.*;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -67,6 +71,35 @@ public class TasksController {
             response.sendError(HttpStatus.NOT_FOUND.value(), e.getMessage());
         }
         return taskResponse;
+    }
+
+    @GetMapping(path = "/{id}/attachments/{filename}")
+    public ResponseEntity getAttachmentByFilename(@PathVariable Long id, @PathVariable String filename, HttpServletRequest request) {
+        log.info("Fetching an tasks {} attachment : {}", id, filename );
+        Resource resource = null;
+        String mimeType = null;
+
+        try{
+            resource = storageService.loadFile(filename);
+            mimeType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+            if(mimeType==null){
+                mimeType="application/octet-stream";
+            }
+        }catch(NotFoundException | MalformedURLException e) {
+            log.error("Unable to add attachment totask: {} - error: {}", id, e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        } catch (IOException e) {
+            log.error("Unable to add attachment totask: {} - error: {}", id, e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.parseMediaType(mimeType))
+                .body(resource);
     }
 
     @PostMapping(path = "/{id}/attachments")
