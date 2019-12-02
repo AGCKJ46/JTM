@@ -1,20 +1,18 @@
 package net.ckj46.JTM.tasks.boundary;
 
-import com.sun.deploy.net.HttpResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.ckj46.JTM.exceptions.NotFoundException;
 import net.ckj46.JTM.tasks.control.TasksService;
 import net.ckj46.JTM.tasks.entity.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,15 +20,11 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequestMapping(path="/api/tasks")
 @RestController
+@RequiredArgsConstructor
 public class TasksController {
     private final TasksRepository tasksRepository;
     private final TasksService tasksService;
-
-    @Autowired
-    public TasksController(TasksRepository tasksRepository, TasksService tasksService) {
-        this.tasksRepository = tasksRepository;
-        this.tasksService = tasksService;
-    }
+    private final StorageService storageService;
 
     @PostConstruct
     void init(){
@@ -75,6 +69,23 @@ public class TasksController {
         return taskResponse;
     }
 
+    @PostMapping(path = "/{id}/attachments")
+    public ResponseEntity addAttachment(@PathVariable Long id, @RequestParam("file") MultipartFile file){
+        log.info("Adding attachment: {} to a task: {}", file.getName(), id);
+
+        try {
+            storageService.saveFile(id, file);
+        } catch (IOException e) { // TODO to split to specific exceptions
+            log.error("Unable to add attachment: {} to task: {} - error: {}", file.getName(), id, e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Unable to add attachment: "+file.getName()+" "+file.getOriginalFilename()+" to task: "+id+" - error: " + e.getMessage());
+        }
+        return ResponseEntity
+                .noContent()
+                .build();
+    }
+
     @PostMapping
     public void addTask(HttpServletResponse response, @RequestBody CreateTaskRequest task) {
         log.info("Adding new task: {}", task.toString());
@@ -83,8 +94,7 @@ public class TasksController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity
-    deletingTaskById(@PathVariable Long id) {
+    public ResponseEntity deletingTaskById(@PathVariable Long id) {
         log.info("Deleting a task: {}", id);
         try {
             tasksRepository.deletingById(id);
