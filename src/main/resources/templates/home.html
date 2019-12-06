@@ -40,7 +40,7 @@
 
 
 <h2>Add new:</h2>
-<form action="#" method="post" th:action="@{/tasks}" th:object="${newTask}">
+<form action="#" method="post" th:action="@{/tasks}" th:object="${newTask}" enctype="multipart/form-data">
     <fieldset>
         <label>
             Title:
@@ -55,6 +55,11 @@
         <label>
             Project:
             <input type="text" th:field="*{project}">
+        </label>
+        <br><br>
+        <label>
+            Attachment
+            <input type="file" name="attachment">
         </label>
     </fieldset>
     <button type="submit">Add task</button>

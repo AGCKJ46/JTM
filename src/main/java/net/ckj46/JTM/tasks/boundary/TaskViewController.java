@@ -2,13 +2,15 @@ package net.ckj46.JTM.tasks.boundary;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.ckj46.JTM.attachments.StorageService;
 import net.ckj46.JTM.tasks.control.TasksService;
+import net.ckj46.JTM.tasks.entity.Task;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class TaskViewController {
 
     private final TasksService tasksService;
+    private final StorageService storageService;
 
     @GetMapping("/")
     public String homePage(Model model){
@@ -25,9 +28,12 @@ public class TaskViewController {
     }
 
     @PostMapping("/tasks")
-    public String addTask(@ModelAttribute("newTask") CreateTaskRequest request){
+    public String addTask(@ModelAttribute("newTask") CreateTaskRequest request,
+                          @RequestParam("attachment")MultipartFile attachment) throws IOException {
         log.info("New task is adding now...");
-        tasksService.addTask(request.title, request.description, request.project, request.prio);
+        Task task = tasksService.addTask(request.title, request.description, request.project, request.prio);
+        storageService.saveFile(task.getId(), attachment);
+
         return "redirect:/";
     }
 
