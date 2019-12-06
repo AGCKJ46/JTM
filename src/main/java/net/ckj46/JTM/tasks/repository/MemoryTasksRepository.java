@@ -38,13 +38,6 @@ public class MemoryTasksRepository implements TasksRepository {
     }
 
     @Override
-    public void deletingById(Long id) {
-        Task task = findById(id)
-                .orElseThrow(()-> new NotFoundException("Task with id: "+id+" not found!"));
-        repo.remove(task);
-    }
-
-    @Override
     public void update(Long id, String title, String description, String project, int prio, LocalDateTime editedAt) {
         Task task = findById(id)
                 .orElseThrow(()-> new NotFoundException("Task with id: "+id+" not found!"));
@@ -54,6 +47,13 @@ public class MemoryTasksRepository implements TasksRepository {
         task.setProject(project);
         task.setPrio(prio);
         task.setEditedAt(editedAt);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        Task task = findById(id)
+                .orElseThrow(()-> new NotFoundException("Task with id: "+id+" not found!"));
+        repo.remove(task);
     }
 
     private Optional<Task> findById(Long id) {

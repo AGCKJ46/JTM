@@ -128,16 +128,16 @@ public class TasksController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity deletingTaskById(@PathVariable Long id) {
+    public ResponseEntity deleteTaskById(@PathVariable Long id) {
         log.info("Deleting a task: {}", id);
         try {
-            tasksRepository.deletingById(id);
+            tasksRepository.deleteById(id);
             log.info("Task: {} is deleted!", id);
             return ResponseEntity
                     .noContent()
                     .build();
         }catch (NotFoundException e){
-            log.error("Unable to delete task: {} - error: {}", id, e.getMessage());
+            log.error("Unable to delete a task: {} - error: {}", id, e.getMessage());
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body(e.getMessage());

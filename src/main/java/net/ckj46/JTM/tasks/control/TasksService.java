@@ -50,4 +50,8 @@ public class TasksService {
                         || task.getDescription().contains(query))
                 .collect(Collectors.toList());
     }
+
+    public void deleteTask(Long id) {
+        tasksRepository.deleteById(id);
+    }
 }
