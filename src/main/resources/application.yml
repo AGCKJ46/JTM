@@ -8,8 +8,12 @@ app.task:
 spring.profiles: dev
 server:
   port: 8080
+file.system.storage:
+  path: "J:/JAVA/JTM_fsss"
 
 ---
 spring.profiles: prod
 server:
   port: 9090
+file.system.storage:
+  path: "J:/JAVA/JTM_fsss"

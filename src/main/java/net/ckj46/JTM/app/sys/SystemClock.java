@@ -1,6 +1,6 @@
-package net.ckj46.JTM;
+package net.ckj46.JTM.app.sys;
 
-import org.springframework.stereotype.Component;
+import net.ckj46.JTM.app.sys.Clock;
 
 import java.time.LocalDateTime;
 

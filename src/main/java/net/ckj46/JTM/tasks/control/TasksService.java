@@ -1,7 +1,7 @@
 package net.ckj46.JTM.tasks.control;
 
-import net.ckj46.JTM.Clock;
-import net.ckj46.JTM.tasks.boundary.TasksRepository;
+import net.ckj46.JTM.app.sys.Clock;
+import net.ckj46.JTM.tasks.repository.TasksRepository;
 import net.ckj46.JTM.tasks.entity.Task;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +29,8 @@ public class TasksService {
                         project,
                         prio,
                         clock.time(),
-                        clock.time()
+                        clock.time(),
+                        null
                 )
         );
     }
@@ -45,10 +46,8 @@ public class TasksService {
     public List<Task> filterAllByQuery(String query){
         return tasksRepository.fetchAll()
                 .stream()
-                .filter(task -> {
-                    return task.getTitle().contains(query)
-                            || task.getDescription().contains(query);
-                })
+                .filter(task -> task.getTitle().contains(query)
+                        || task.getDescription().contains(query))
                 .collect(Collectors.toList());
     }
 }

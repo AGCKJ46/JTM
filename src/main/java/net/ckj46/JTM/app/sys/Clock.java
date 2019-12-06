@@ -1,4 +1,4 @@
-package net.ckj46.JTM;
+package net.ckj46.JTM.app.sys;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -9,5 +9,5 @@ public interface Clock {
 
     default LocalDate date(){
         return time().toLocalDate();
-    };
+    }
 }

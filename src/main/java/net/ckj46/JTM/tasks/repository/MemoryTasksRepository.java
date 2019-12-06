@@ -1,6 +1,7 @@
-package net.ckj46.JTM.tasks.boundary;
+package net.ckj46.JTM.tasks.repository;
 
-import net.ckj46.JTM.exceptions.NotFoundException;
+import net.ckj46.JTM.attachments.StorageService;
+import net.ckj46.JTM.app.exceptions.NotFoundException;
 import net.ckj46.JTM.tasks.entity.Task;
 import org.springframework.stereotype.Repository;
 
@@ -12,6 +13,11 @@ import java.util.Optional;
 @Repository
 public class MemoryTasksRepository implements TasksRepository {
     private final List<Task> repo = new LinkedList<>();
+    private final StorageService fileSystemStorageService;
+
+    public MemoryTasksRepository(StorageService fileSystemStorageService) {
+        this.fileSystemStorageService = fileSystemStorageService;
+    }
 
     @Override
     public void add(Task task) {
@@ -25,8 +31,10 @@ public class MemoryTasksRepository implements TasksRepository {
 
     @Override
     public Task fetchById(Long id) {
-        return findById(id)
+        Task task = findById(id)
                 .orElseThrow(()->new NotFoundException("Task with id: "+id+" not found!"));
+        task.setAttachmentsList(fileSystemStorageService.fetchAllAttachments(id));
+        return task;
     }
 
     @Override

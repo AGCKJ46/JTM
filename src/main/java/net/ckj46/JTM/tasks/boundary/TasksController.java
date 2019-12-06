@@ -2,9 +2,11 @@ package net.ckj46.JTM.tasks.boundary;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.ckj46.JTM.exceptions.NotFoundException;
+import net.ckj46.JTM.attachments.StorageService;
+import net.ckj46.JTM.app.exceptions.NotFoundException;
 import net.ckj46.JTM.tasks.control.TasksService;
 import net.ckj46.JTM.tasks.entity.*;
+import net.ckj46.JTM.tasks.repository.TasksRepository;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -37,7 +39,6 @@ public class TasksController {
         tasksService.addTask("wymienić zamek w drzwiach do garażu", "", "Dom", 2);
     }
 
-    // 200 /
     @GetMapping
     public List<TaskResponse> getTasks(HttpServletResponse response, @RequestParam Optional<String> query) throws IOException {
         log.info("Fetching all task with query: {}", query);
@@ -76,24 +77,24 @@ public class TasksController {
     @GetMapping(path = "/{id}/attachments/{filename}")
     public ResponseEntity getAttachmentByFilename(@PathVariable Long id, @PathVariable String filename, HttpServletRequest request) {
         log.info("Fetching an tasks {} attachment : {}", id, filename );
-        Resource resource = null;
-        String mimeType = null;
+        Resource resource;
+        String mimeType;
 
         try{
-            resource = storageService.loadFile(filename);
+            resource = storageService.loadFile(id, filename);
             mimeType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
             if(mimeType==null){
                 mimeType="application/octet-stream";
             }
         }catch(NotFoundException | MalformedURLException e) {
-            log.error("Unable to add attachment totask: {} - error: {}", id, e.getMessage());
+            log.error("Unable to add attachment to a task: {} - error: {}", id, e.getMessage());
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body(e.getMessage());
         } catch (IOException e) {
-            log.error("Unable to add attachment totask: {} - error: {}", id, e.getMessage());
+            log.error("Unable to add attachment to a task: {} - error: {}", id, e.getMessage());
             return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(e.getMessage());
         }
         return ResponseEntity
@@ -104,15 +105,15 @@ public class TasksController {
 
     @PostMapping(path = "/{id}/attachments")
     public ResponseEntity addAttachment(@PathVariable Long id, @RequestParam("file") MultipartFile file){
-        log.info("Adding attachment: {} to a task: {}", file.getName(), id);
+        log.info("Adding attachment: {} to a task: {}", file.getOriginalFilename(), id);
 
         try {
             storageService.saveFile(id, file);
         } catch (IOException e) { // TODO to split to specific exceptions
-            log.error("Unable to add attachment: {} to task: {} - error: {}", file.getName(), id, e.getMessage());
+            log.error("Unable to add attachment: {} to a task: {} - error: {}", file.getName(), id, e.getMessage());
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Unable to add attachment: "+file.getName()+" "+file.getOriginalFilename()+" to task: "+id+" - error: " + e.getMessage());
+                    .body("Unable to add attachment: "+file.getName()+" "+file.getOriginalFilename()+" to a task: "+id+" - error: " + e.getMessage());
         }
         return ResponseEntity
                 .noContent()
@@ -169,7 +170,8 @@ public class TasksController {
                 task.getProject(),
                 task.getPrio(),
                 task.getCreatedAt(),
-                task.getEditedAt()
+                task.getEditedAt(),
+                task.getAttachmentsList()
         );
     }
 }
