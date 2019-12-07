@@ -29,10 +29,12 @@ public class TaskViewController {
 
     @PostMapping("/tasks")
     public String addTask(@ModelAttribute("newTask") CreateTaskRequest request,
-                          @RequestParam("attachment")MultipartFile attachment) throws IOException {
+                          @RequestParam("attachment") MultipartFile attachment) throws IOException {
         log.info("New task is adding now...");
         Task task = tasksService.addTask(request.title, request.description, request.project, request.prio);
-        storageService.saveFile(task.getId(), attachment);
+        if (!attachment.isEmpty()) {
+            storageService.saveFile(task.getId(), attachment);
+        }
 
         return "redirect:/";
     }

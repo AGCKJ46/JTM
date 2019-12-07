@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 @RequestMapping(path="/api/tasks")
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin
 public class TasksController {
     private final TasksRepository tasksRepository;
     private final TasksService tasksService;
