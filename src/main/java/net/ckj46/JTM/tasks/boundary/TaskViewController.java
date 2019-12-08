@@ -42,7 +42,7 @@ public class TaskViewController {
     @PostMapping("/tasks/delete/{id}")
     public String deleteTask(@PathVariable Long id){
         log.info("Task {} is deleting now...",id);
-        tasksService.deleteTask(id);
+        tasksService.deleteTaskById(id);
         return "redirect:/";
     }
 }

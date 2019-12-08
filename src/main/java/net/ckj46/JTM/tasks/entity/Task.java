@@ -18,5 +18,5 @@ public class Task {
     private int prio;
     private LocalDateTime createdAt;
     private LocalDateTime editedAt;
-    private List attachmentsList;
+    private List attachmentsList; // TODO List => Set
 }
