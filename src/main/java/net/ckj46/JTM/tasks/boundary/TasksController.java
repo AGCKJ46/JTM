@@ -6,7 +6,6 @@ import net.ckj46.JTM.attachments.StorageService;
 import net.ckj46.JTM.app.exceptions.NotFoundException;
 import net.ckj46.JTM.tasks.control.TasksService;
 import net.ckj46.JTM.tasks.entity.*;
-import net.ckj46.JTM.tasks.repository.TasksRepository;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,7 +28,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @CrossOrigin
 public class TasksController {
-    private final TasksRepository tasksRepository;
     private final TasksService tasksService;
     private final StorageService storageService;
 
@@ -66,7 +64,7 @@ public class TasksController {
         log.info("Fetching a task: {}", id);
         TaskResponse taskResponse = null;
         try{
-            taskResponse = toTaskResponse(tasksRepository.fetchById(id));
+            taskResponse = toTaskResponse(tasksService.fetchTaskById(id));
             response.setStatus(HttpStatus.OK.value());
         }catch(NotFoundException e) {
             log.error("Unable to find a task: {} - error: {}", id, e.getMessage());
@@ -132,7 +130,7 @@ public class TasksController {
     public ResponseEntity deleteTaskById(@PathVariable Long id) {
         log.info("Deleting a task: {}", id);
         try {
-            tasksRepository.deleteById(id);
+            tasksService.deleteTaskById(id);
             log.info("Task: {} is deleted!", id);
             return ResponseEntity
                     .noContent()
@@ -160,7 +158,6 @@ public class TasksController {
                     .status(HttpStatus.NOT_FOUND)
                     .body(e.getMessage());
         }
-
     }
 
     private TaskResponse toTaskResponse(Task task) {

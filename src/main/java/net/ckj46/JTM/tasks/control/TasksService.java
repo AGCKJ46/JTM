@@ -51,8 +51,12 @@ public class TasksService {
                 .collect(Collectors.toList());
     }
 
-    public void deleteTask(Long id) {
+    public void deleteTaskById(Long id) {
         tasksRepository.deleteById(id);
         // TODO add delete of tasks attachments
+    }
+
+    public Task fetchTaskById(Long id) {
+        return tasksRepository.fetchById(id);
     }
 }
