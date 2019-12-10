@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 public class TasksService {
     private final TasksRepository tasksRepository;
     private final Clock clock;
-    private final AtomicLong nextTaskId = new AtomicLong(0L);
 
     public TasksService(TasksRepository tasksRepository, Clock clock) {
         this.tasksRepository = tasksRepository;
@@ -22,14 +21,12 @@ public class TasksService {
 
     public Task addTask(String title, String description, String project, int prio) {
         Task task = new Task(
-                nextTaskId.getAndIncrement(),
                 title,
                 description,
                 project,
                 prio,
                 clock.time(),
-                clock.time(),
-                null
+                clock.time()
         );
         tasksRepository.add(task);
         return task;

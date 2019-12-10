@@ -11,6 +11,10 @@ server:
 file.system.storage:
   path: "J:/JAVA/JTM_fsss"
 
+spring:
+  h2:
+    console:
+      enabled: true
 ---
 spring.profiles: prod
 server:
