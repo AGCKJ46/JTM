@@ -28,7 +28,7 @@ public class TaskViewController {
         return "home";
     }
 
-    @GetMapping("/tasks/attachments/{taskId}")
+    @GetMapping("/tasks/{taskId}/attachments")
     public String attachmentsPage(Model model, @PathVariable Long taskId){
         Task task = tasksService.fetchTaskById(taskId);
 
@@ -51,7 +51,7 @@ public class TaskViewController {
     }
 
 
-    @PostMapping("/tasks")
+    @PostMapping("/tasks/new")
     public String addTaskAction(@ModelAttribute("newTask") CreateTaskRequest request,
                           @RequestParam("attachment") MultipartFile attachment) throws IOException {
         log.info("New task is adding now...");
@@ -59,10 +59,10 @@ public class TaskViewController {
         return "redirect:/";
     }
 
-    @PostMapping("/tasks/delete/{id}")
-    public String deleteTaskAction(@PathVariable Long id) throws IOException {
-        log.info("Task {} is deleting now...",id);
-        tasksService.deleteTaskById(id);
+    @PostMapping("/tasks/{taskId}/delete")
+    public String deleteTaskAction(@PathVariable Long taskId) throws IOException {
+        log.info("Task {} is deleting now...",taskId);
+        tasksService.deleteTaskById(taskId);
         return "redirect:/";
     }
 
