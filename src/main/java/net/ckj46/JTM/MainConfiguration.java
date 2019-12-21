@@ -2,11 +2,11 @@ package net.ckj46.JTM;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.ckj46.JTM.attachments.FileSystemStorageConfigurationProperties;
+import net.ckj46.JTM.attachments.repository.FileSystemStorageConfigurationProperties;
 import net.ckj46.JTM.app.sys.Clock;
 import net.ckj46.JTM.app.sys.SystemClock;
-import net.ckj46.JTM.attachments.FileSystemStorageService;
-import net.ckj46.JTM.attachments.StorageService;
+import net.ckj46.JTM.attachments.repository.FileSystemStorageService;
+import net.ckj46.JTM.attachments.repository.StorageService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

@@ -1,16 +1,18 @@
 package net.ckj46.JTM.tasks.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import net.ckj46.JTM.attachments.entity.Attachment;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDateTime;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Table("tasks")
+@Slf4j
 public class Task {
     @Id
     private Long id;
@@ -24,6 +26,8 @@ public class Task {
     private LocalDateTime createdAt;
     private LocalDateTime editedAt;
 
+    private Set<Attachment> attachments = new HashSet<>();
+
     public Task(String title, String description, String project, int prio, LocalDateTime createdAt, LocalDateTime editedAt) {
         this.title = title;
         this.description = description;
@@ -33,12 +37,16 @@ public class Task {
         this.editedAt = editedAt;
     }
 
-
-    // private List attachmentsList; // TODO List => Set
-    public List<Task> getAttachmentsList(){
-        return new LinkedList<>();
+    public Set<Attachment> getAttachments(){
+        return attachments;
     }
 
-    public void setAttachmentsList(List<String> attachmentsList){
+    public void setAttachments(Set<Attachment> attachments){
+        this.attachments = attachments;
+    }
+
+    public void addAttachment(Attachment attachment){
+        log.info("Attachment: {} is added to task: {}",attachment.getFilename(), id);
+        this.attachments.add(attachment);
     }
 }

@@ -1,4 +1,4 @@
-package net.ckj46.JTM.attachments;
+package net.ckj46.JTM.attachments.repository;
 
 import lombok.Data;
 import lombok.Getter;

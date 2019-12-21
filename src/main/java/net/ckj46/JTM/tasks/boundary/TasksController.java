@@ -2,7 +2,9 @@ package net.ckj46.JTM.tasks.boundary;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.ckj46.JTM.attachments.StorageService;
+import net.ckj46.JTM.attachments.control.AttachmentService;
+import net.ckj46.JTM.attachments.entity.Attachment;
+import net.ckj46.JTM.attachments.repository.StorageService;
 import net.ckj46.JTM.app.exceptions.NotFoundException;
 import net.ckj46.JTM.tasks.control.TasksService;
 import net.ckj46.JTM.tasks.entity.*;
@@ -29,13 +31,15 @@ import java.util.stream.Collectors;
 @CrossOrigin
 public class TasksController {
     private final TasksService tasksService;
-    private final StorageService storageService;
+    private final AttachmentService attachmentService;
+
+    private final StorageService storageService; // TODO TaskController nie wpowinien bezpośrednio korzystać z StorageService
 
     @PostConstruct
-    void init(){
-        tasksService.addTask("zadanie domowe M2", "1. rozszerzyć obiekt Task 2. pakietowanie", "Kurs Springa", 1);
-        tasksService.addTask("youtube od Przemka Bykowskiego", "", "Kurs Springa", 1);
-        tasksService.addTask("wymienić zamek w drzwiach do garażu", "", "Dom", 2);
+    void init() throws IOException {
+        tasksService.addTask("zadanie domowe M2", "1. rozszerzyć obiekt Task 2. pakietowanie", "Kurs Springa", 1, null);
+        tasksService.addTask("youtube od Przemka Bykowskiego", "", "Kurs Springa", 1, null);
+        tasksService.addTask("wymienić zamek w drzwiach do garażu", "", "Dom", 2, null);
     }
 
     @GetMapping
@@ -73,6 +77,7 @@ public class TasksController {
         return taskResponse;
     }
 
+    // TODO przenieść do AtachmentControler?
     @GetMapping(path = "/{id}/attachments/{filename}")
     public ResponseEntity getAttachmentByFilename(@PathVariable Long id, @PathVariable String filename, HttpServletRequest request) {
         log.info("Fetching an tasks {} attachment : {}", id, filename );
@@ -102,62 +107,46 @@ public class TasksController {
                 .body(resource);
     }
 
-    @PostMapping(path = "/{id}/attachments")
-    public ResponseEntity addAttachment(@PathVariable Long id, @RequestParam("file") MultipartFile file){
-        log.info("Adding attachment: {} to a task: {}", file.getOriginalFilename(), id);
+    // TODO przenieść do AtachmentControlerv?
+    @PostMapping(path = "/{taskId}/attachments")
+    public ResponseEntity addAttachment(@PathVariable Long taskId, @RequestParam("file") MultipartFile file) throws IOException {
+        log.info("Adding attachment: {} to a task: {}", file.getOriginalFilename(), taskId);
 
-        try {
-            storageService.saveFile(id, file);
-        } catch (IOException e) { // TODO to split to specific exceptions
-            log.error("Unable to add attachment: {} to a task: {} - error: {}", file.getName(), id, e.getMessage());
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Unable to add attachment: "+file.getName()+" "+file.getOriginalFilename()+" to a task: "+id+" - error: " + e.getMessage());
-        }
+        Task task = tasksService.fetchTaskById(taskId);
+        task.addAttachment(new Attachment(file.getOriginalFilename()));
+        attachmentService.addAttachment(file, task.getId());
+        tasksService.saveTask(task);
+
         return ResponseEntity
                 .noContent()
                 .build();
     }
 
     @PostMapping
-    public void addTask(HttpServletResponse response, @RequestBody CreateTaskRequest task) {
+    public void addTask(HttpServletResponse response, @RequestBody CreateTaskRequest task) throws IOException {
         log.info("Adding new task: {}", task.toString());
-        tasksService.addTask(task.title, task.description, task.project, task.prio);
+        tasksService.addTask(task.title, task.description, task.project, task.prio, null);
         response.setStatus(HttpStatus.CREATED.value());
     }
 
-    @DeleteMapping(path = "/{id}")
-    public ResponseEntity deleteTaskById(@PathVariable Long id) {
-        log.info("Deleting a task: {}", id);
-        try {
-            tasksService.deleteTaskById(id);
-            log.info("Task: {} is deleted!", id);
-            return ResponseEntity
-                    .noContent()
-                    .build();
-        }catch (NotFoundException e){
-            log.error("Unable to delete a task: {} - error: {}", id, e.getMessage());
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body(e.getMessage());
-        }
+    @DeleteMapping(path = "/{taskId}")
+    public ResponseEntity deleteTaskById(@PathVariable Long taskId) throws IOException {
+        log.info("Deleting a task: {}", taskId);
+        tasksService.deleteTaskById(taskId);
+        log.info("Task: {} is deleted!", taskId);
+        return ResponseEntity
+                   .noContent()
+                   .build();
     }
 
     @PutMapping(path = "/{id}")
     public ResponseEntity updateTask(@PathVariable Long id, @RequestBody UpdateTaskRequest task ) {
         log.info("Updating a task: {}", id);
-        try {
-            tasksService.updateTask(id, task.title, task.description, task.project, task.prio);
-            log.error("Task {} is updated!", id);
-            return ResponseEntity
-                    .noContent()
-                    .build();
-        }catch(NotFoundException e){
-            log.error("Unable to update task: {} - error: {}", id, e.getMessage());
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body(e.getMessage());
-        }
+        tasksService.updateTask(id, task.title, task.description, task.project, task.prio);
+        log.error("Task {} is updated!", id);
+        return ResponseEntity
+                .noContent()
+                .build();
     }
 
     private TaskResponse toTaskResponse(Task task) {
@@ -169,7 +158,7 @@ public class TasksController {
                 task.getPrio(),
                 task.getCreatedAt(),
                 task.getEditedAt(),
-                task.getAttachmentsList()
+                task.getAttachments()
         );
     }
 }

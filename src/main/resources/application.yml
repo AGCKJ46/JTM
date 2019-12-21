@@ -15,6 +15,10 @@ spring:
   h2:
     console:
       enabled: true
+
+logging:
+  level:
+    org.springframework.jdbc.core: DEBUG
 ---
 spring.profiles: prod
 server:

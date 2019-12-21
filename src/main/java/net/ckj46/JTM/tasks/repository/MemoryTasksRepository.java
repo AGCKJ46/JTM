@@ -1,18 +1,18 @@
 package net.ckj46.JTM.tasks.repository;
 
-import net.ckj46.JTM.attachments.StorageService;
+import net.ckj46.JTM.attachments.repository.StorageService;
 import net.ckj46.JTM.app.exceptions.NotFoundException;
 import net.ckj46.JTM.tasks.entity.Task;
 import org.springframework.stereotype.Repository;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 public class MemoryTasksRepository implements TasksRepository {
-    private final List<Task> repo = new LinkedList<>();
+    private final Set<Task> repo = new HashSet<>();
     private final StorageService fileSystemStorageService;
 
     public MemoryTasksRepository(StorageService fileSystemStorageService) {
@@ -26,14 +26,15 @@ public class MemoryTasksRepository implements TasksRepository {
 
     @Override
     public List<Task> fetchAll() {
-        return repo;
+        return repo
+                .stream()
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Task fetchById(Long id) {
+    public Task fetchById(Long id){
         Task task = findById(id)
                 .orElseThrow(()->new NotFoundException("Task with id: "+id+" not found!"));
-        task.setAttachmentsList(fileSystemStorageService.fetchAllAttachments(id));
         return task;
     }
 
@@ -56,9 +57,18 @@ public class MemoryTasksRepository implements TasksRepository {
         repo.remove(task);
     }
 
+    @Override
+    public void save(Task task) {
+        repo.add(task);
+    }
+
     private Optional<Task> findById(Long id) {
         return repo.stream()
                 .filter(task -> id.equals(task.getId()))
                 .findFirst();
+    }
+
+    private Task fetchAllAttachments(Task task) throws IOException {
+        return fetchById(task.getId());
     }
 }

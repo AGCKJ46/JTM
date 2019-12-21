@@ -21,10 +21,10 @@ Content-Type: application/json
 GET localhost:8080/api/tasks
 
 ###
-GET localhost:8080/api/tasks/1
+GET localhost:8080/api/tasks/4
 
 ###
-DELETE localhost:8080/api/tasks/666
+DELETE localhost:8080/api/tasks/4
 
 ###
 PUT localhost:8080/api/tasks/3

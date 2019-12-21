@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <title>Java Task Management</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="bootstrap-theme.min.css">
+</head>
+<body>
+<div class="container">
+    <h1>Java Task Menagment</h1>
+    <h2>Task id:
+        <span th:text="${taskId}"></span>
+    </h2>
+    <h2>Task tile:
+        <span th:text="${taskTitle}"></span>
+    </h2>
+    <h3>Attachments list:</h3>
+    <table class="table table-striped thead-dark">
+        <thead>
+            <tr align="left">
+                <th scope="col">#</th>
+                <th scope="col">Filename</th>
+                <th scope="col">Created at</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr scope="row" align="left" th:each="attachment: ${attachments}">
+                <td th:text="${attachment.id}"></td>
+                <td th:text="${attachment.filename}"></td>
+                <td th:text="${attachment.createdAt}"></td>
+                <td>
+                    <form action="#" method="post" th:action="@{/tasks/attachments/delete/{attachmentId}(attachmentId=${attachment.id})}">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+                <td>
+                    <form action="#" method="get" th:action="@{/tasks/attachments/comments/{attachmentId}(attachmentId=${attachment.id})}">
+                        <button type="submit" class="btn btn-primary">Comments</button>
+                    </form>
+                </td>
+           </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

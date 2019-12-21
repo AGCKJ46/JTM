@@ -4,65 +4,76 @@
 <head>
     <meta charset="utf-8">
     <title>Java Task Management</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
 <body>
-<h1>Java Task Menagment</h1>
-<h2>Tasks list:</h2>
-<table>
-    <thead>
-    <tr align="left">
-        <th>#</th>
-        <th>Title</th>
-        <th>Description</th>
-        <th>Project</th>
-        <th>Priority</th>
-        <th>Created at</th>
-        <th>Edited at</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr align="left" th:each="task: ${tasks}">
-        <td th:text="${task.id}"></td>
-        <td th:text="${task.title}"></td>
-        <td th:text="${task.description}"></td>
-        <td th:text="${task.project}"></td>
-        <td th:text="${task.prio}"></td>
-        <td th:text="${{task.createdAt}}"></td>
-        <td th:text="${{task.editedAt}}"></td>
-        <td>
-           <form action="#" method="post" th:action="@{/tasks/delete/{id}(id=${task.id})}">
-               <button type="submit">Del</button>
-           </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<div class="container">
+    <h1>Java Task Menagment</h1>
+    <h2>Tasks list:</h2>
+    <table class="table table-striped thead-dark">
+        <thead>
+        <tr align="left">
+            <th scope="col">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Description</th>
+            <th scope="col">Project</th>
+            <th scope="col">Priority</th>
+            <th scope="col">Created at</th>
+            <th scope="col">Edited at</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr scope="row" align="left" th:each="task: ${tasks}">
+            <td th:text="${task.id}"></td>
+            <td th:text="${task.title}"></td>
+            <td th:text="${task.description}"></td>
+            <td th:text="${task.project}"></td>
+            <td th:text="${task.prio}"></td>
+            <td th:text="${{task.createdAt}}"></td>
+            <td th:text="${{task.editedAt}}"></td>
+            <td>
+               <form action="#" method="post" th:action="@{/tasks/delete/{id}(id=${task.id})}">
+                   <button type="submit" class="btn btn-danger">Delete</button>
+               </form>
+            </td>
+            <td>
+                <form action="#" method="get" th:action="@{/tasks/attachments/{id}(id=${task.id})}">
+                    <button type="submit" class="btn btn-primary">Attachments</button>
+                </form>
+            </td>
+           </tr>
+        </tbody>
+    </table>
 
 
-<h2>Add new:</h2>
-<form action="#" method="post" th:action="@{/tasks}" th:object="${newTask}" enctype="multipart/form-data">
-    <fieldset>
-        <label>
-            Title:
-            <input type="text" th:field="*{title}">
-        </label>
-        <br><br>
-        <label>
-            Description:
-            <input type="text" th:field="*{description}">
-        </label>
-        <br><br>
-        <label>
-            Project:
-            <input type="text" th:field="*{project}">
-        </label>
-        <br><br>
-        <label>
-            Attachment
-            <input type="file" name="attachment">
-        </label>
-    </fieldset>
-    <button type="submit">Add task</button>
-</form>
+    <h2>Add new:</h2>
+    <form action="#" method="post" th:action="@{/tasks}" th:object="${newTask}" enctype="multipart/form-data">
+        <fieldset>
+            <label>
+                Title:
+                <input type="text" th:field="*{title}">
+            </label>
+            <br><br>
+            <label>
+                Description:
+                <input type="text" th:field="*{description}">
+            </label>
+            <br><br>
+            <label>
+                Project:
+                <input type="text" th:field="*{project}">
+            </label>
+            <br><br>
+            <label>
+                Attachment
+                <input type="file" name="attachment">
+            </label>
+        </fieldset>
+        <button type="submit">Add task</button>
+    </form>
+</div>
 </body>
 </html>
