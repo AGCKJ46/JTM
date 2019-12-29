@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <title>Java Task Management</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="bootstrap-theme.min.css">
+</head>
+
+<body>
+<div class="container">
+    <h1>Java Task Menagment</h1>
+    <table>
+        <tr scope="row">
+            <td align="left">
+                <h3>Attachments list:</h3>
+                <h3>Task id:
+                    <span th:text="${taskId}"></span>
+                </h3>
+                <h3>Task title:
+                    <span th:text="${taskTitle}"></span>
+                </h3>
+            </td>
+            <td align="right">
+                <form action="#" method="get" th:action="@{tasks/{id}/attachments/addnew(id=${taskId})}">
+                    <button type="submit" class="btn btn-primary">Add new attachment</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+    <table class="table table-striped thead-dark">
+        <thead>
+        <tr align="left">
+            <th scope="col">#</th>
+            <th scope="col">Filename</th>
+            <th scope="col">Created at</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr scope="row" align="left" th:each="attachment: ${attachments}">
+            <td th:text="${attachment.id}"></td>
+            <td th:text="${attachment.fileName}"></td>
+            <td th:text="${attachment.createdAt}"></td>
+            <td>
+                <form action="#" method="post"
+                      th:action="@{/tasks/attachments/delete/{attachmentId}(attachmentId=${attachment.id})}">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </td>
+            <td>
+                <form action="#" method="get"
+                      th:action="@{/tasks/attachments/comments/{attachmentId}(attachmentId=${attachment.id})}">
+                    <button type="submit" class="btn btn-primary">Comments</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

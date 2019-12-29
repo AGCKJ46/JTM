@@ -1,13 +1,16 @@
 package net.ckj46.JTM.tasks.repository;
 
-import net.ckj46.JTM.attachments.repository.StorageService;
 import net.ckj46.JTM.app.exceptions.NotFoundException;
+import net.ckj46.JTM.attachments.repository.StorageService;
 import net.ckj46.JTM.tasks.entity.Task;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Repository
@@ -32,16 +35,16 @@ public class MemoryTasksRepository implements TasksRepository {
     }
 
     @Override
-    public Task fetchById(Long id){
+    public Task fetchById(Long id) {
         Task task = findById(id)
-                .orElseThrow(()->new NotFoundException("Task with id: "+id+" not found!"));
+                .orElseThrow(() -> new NotFoundException("Task with id: " + id + " not found!"));
         return task;
     }
 
     @Override
     public void update(Long id, String title, String description, String project, int prio, LocalDateTime editedAt) {
         Task task = findById(id)
-                .orElseThrow(()-> new NotFoundException("Task with id: "+id+" not found!"));
+                .orElseThrow(() -> new NotFoundException("Task with id: " + id + " not found!"));
 
         task.setTitle(title);
         task.setDescription(description);
@@ -53,7 +56,7 @@ public class MemoryTasksRepository implements TasksRepository {
     @Override
     public void deleteById(Long id) {
         Task task = findById(id)
-                .orElseThrow(()-> new NotFoundException("Task with id: "+id+" not found!"));
+                .orElseThrow(() -> new NotFoundException("Task with id: " + id + " not found!"));
         repo.remove(task);
     }
 

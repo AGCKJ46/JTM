@@ -1,17 +1,16 @@
 package net.ckj46.JTM.attachments.repository;
 
 import lombok.extern.slf4j.Slf4j;
-import net.ckj46.JTM.attachments.entity.Attachment;
-import net.ckj46.JTM.tasks.entity.Task;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.nio.file.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 
 @Slf4j
 public class FileSystemStorageService implements StorageService {
@@ -25,7 +24,7 @@ public class FileSystemStorageService implements StorageService {
     public void saveFile(Long taskId, MultipartFile file) throws IOException {
         Path directoryPath = path.resolve(taskId.toString());
 
-        if(!Files.isDirectory(directoryPath)){
+        if (!Files.isDirectory(directoryPath)) {
             Files.createDirectory(directoryPath);
         }
         Path targetPath = directoryPath.resolve(file.getOriginalFilename());
@@ -61,7 +60,7 @@ public class FileSystemStorageService implements StorageService {
         Path directoryPath = path.resolve(taskId.toString());
         Path targetPath = directoryPath.resolve(fileName);
         log.info("Attachment: {} is deleted from directory: {}", fileName, directoryPath);
-        if(Files.isRegularFile(targetPath, LinkOption.NOFOLLOW_LINKS)){
+        if (Files.isRegularFile(targetPath, LinkOption.NOFOLLOW_LINKS)) {
             Files.delete(targetPath);
         }
     }

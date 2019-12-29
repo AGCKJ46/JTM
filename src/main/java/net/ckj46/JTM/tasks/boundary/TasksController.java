@@ -2,12 +2,12 @@ package net.ckj46.JTM.tasks.boundary;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.ckj46.JTM.app.exceptions.NotFoundException;
 import net.ckj46.JTM.attachments.control.AttachmentService;
 import net.ckj46.JTM.attachments.entity.Attachment;
 import net.ckj46.JTM.attachments.repository.StorageService;
-import net.ckj46.JTM.app.exceptions.NotFoundException;
 import net.ckj46.JTM.tasks.control.TasksService;
-import net.ckj46.JTM.tasks.entity.*;
+import net.ckj46.JTM.tasks.entity.Task;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,7 +25,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
-@RequestMapping(path="/api/tasks")
+@RequestMapping(path = "/api/tasks")
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin
@@ -47,16 +47,16 @@ public class TasksController {
         log.info("Fetching all task with query: {}", query);
 
         List<TaskResponse> taskResponseList = null;
-        try{
+        try {
             taskResponseList = query
-                                .map(tasksService::filterAllByQuery)
-                                .orElseGet(tasksService::fetchAll)
-                                .stream()
-                                .map(this::toTaskResponse)
-                                .collect(Collectors.toList());
+                    .map(tasksService::filterAllByQuery)
+                    .orElseGet(tasksService::fetchAll)
+                    .stream()
+                    .map(this::toTaskResponse)
+                    .collect(Collectors.toList());
 
             response.setStatus(HttpStatus.OK.value());
-        }catch(Exception e){
+        } catch (Exception e) {
             response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
         }
 
@@ -67,10 +67,10 @@ public class TasksController {
     public TaskResponse getTaskById(HttpServletResponse response, @PathVariable Long id) throws IOException {
         log.info("Fetching a task: {}", id);
         TaskResponse taskResponse = null;
-        try{
+        try {
             taskResponse = toTaskResponse(tasksService.fetchTaskById(id));
             response.setStatus(HttpStatus.OK.value());
-        }catch(NotFoundException e) {
+        } catch (NotFoundException e) {
             log.error("Unable to find a task: {} - error: {}", id, e.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value(), e.getMessage());
         }
@@ -80,17 +80,17 @@ public class TasksController {
     // TODO przenieść do AtachmentControler?
     @GetMapping(path = "/{id}/attachments/{filename}")
     public ResponseEntity getAttachmentByFilename(@PathVariable Long id, @PathVariable String filename, HttpServletRequest request) {
-        log.info("Fetching an tasks {} attachment : {}", id, filename );
+        log.info("Fetching an tasks {} attachment : {}", id, filename);
         Resource resource;
         String mimeType;
 
-        try{
+        try {
             resource = storageService.loadFile(id, filename);
             mimeType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
-            if(mimeType==null){
-                mimeType="application/octet-stream";
+            if (mimeType == null) {
+                mimeType = "application/octet-stream";
             }
-        }catch(NotFoundException | MalformedURLException e) {
+        } catch (NotFoundException | MalformedURLException e) {
             log.error("Unable to add attachment to a task: {} - error: {}", id, e.getMessage());
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
@@ -135,12 +135,12 @@ public class TasksController {
         tasksService.deleteTaskById(taskId);
         log.info("Task: {} is deleted!", taskId);
         return ResponseEntity
-                   .noContent()
-                   .build();
+                .noContent()
+                .build();
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity updateTask(@PathVariable Long id, @RequestBody UpdateTaskRequest task ) {
+    public ResponseEntity updateTask(@PathVariable Long id, @RequestBody UpdateTaskRequest task) {
         log.info("Updating a task: {}", id);
         tasksService.updateTask(id, task.title, task.description, task.project, task.prio);
         log.error("Task {} is updated!", id);

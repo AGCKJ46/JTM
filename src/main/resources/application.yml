@@ -2,14 +2,14 @@ server:
   port: 8080
 
 app.task:
-    endpointMessage: Hello, world!
+  endpointMessage: Hello, world!
 
 ---
 spring.profiles: dev
 server:
   port: 8080
 file.system.storage:
-  path: "J:/JAVA/JTM_fsss"
+  path: "C:/Users/agruszczewski/Documents/JTM"
 
 spring:
   h2:

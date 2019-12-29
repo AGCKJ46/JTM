@@ -6,17 +6,16 @@ import net.ckj46.JTM.tasks.entity.Task;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
-import javax.naming.CannotProceedException;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.toList;
 
+
+@Primary
 @RequiredArgsConstructor
 @Repository
-@Primary
 public class AdaptedTasksCrudRepository implements TasksRepository {
     private final TasksCrudRepository tasksCrudRepository;
 

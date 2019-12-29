@@ -3,13 +3,12 @@ package net.ckj46.JTM.tasks.control;
 import net.ckj46.JTM.app.sys.Clock;
 import net.ckj46.JTM.attachments.control.AttachmentService;
 import net.ckj46.JTM.attachments.entity.Attachment;
-import net.ckj46.JTM.tasks.repository.TasksRepository;
 import net.ckj46.JTM.tasks.entity.Task;
+import net.ckj46.JTM.tasks.repository.TasksRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -38,7 +37,7 @@ public class TasksService {
         );
         tasksRepository.add(task);
 
-        if (file!= null && !file.isEmpty()) {
+        if (file != null && !file.isEmpty()) {
             attachmentService.addAttachment(file, task.getId());
             task.addAttachment(new Attachment(file.getOriginalFilename()));
             tasksRepository.save(task); // TODO save -> update
@@ -51,11 +50,11 @@ public class TasksService {
         tasksRepository.update(id, title, description, project, prio, clock.time());
     }
 
-    public List<Task> fetchAll(){
+    public List<Task> fetchAll() {
         return tasksRepository.fetchAll();
     }
 
-    public List<Task> filterAllByQuery(String query){
+    public List<Task> filterAllByQuery(String query) {
         return tasksRepository.fetchAll()
                 .stream()
                 .filter(task -> task.getTitle().contains(query)

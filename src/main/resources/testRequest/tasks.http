@@ -2,9 +2,9 @@ POST localhost:8080/api/tasks
 Content-Type: application/json
 
 {
-  "title":"zadanie domowe M3",
-  "project":"Kurs Springa",
-  "prio":1
+  "title": "zadanie domowe M3",
+  "project": "Kurs Springa",
+  "prio": 1
 }
 
 ###
@@ -12,9 +12,9 @@ POST localhost:8080/api/tasks
 Content-Type: application/json
 
 {
-  "title":"wentylacja garażu",
-  "project":"Dom",
-  "prio":1
+  "title": "wentylacja garażu",
+  "project": "Dom",
+  "prio": 1
 }
 
 ###
@@ -31,9 +31,10 @@ PUT localhost:8080/api/tasks/3
 Content-Type: application/json
 
 {
-  "title":"youtube od Przemka Bykowskiego",
+  "title": "youtube od Przemka Bykowskiego",
   "description": "dwa kursy - jeden dotyczy SpringBoot'a a drugi Springa",
-  "project":"Kurs Springa",
-  "prio":1
+  "project": "Kurs Springa",
+  "prio": 1
 }
+
 ###

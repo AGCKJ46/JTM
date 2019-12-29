@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+</html>
+
+
+<h2>Add new:</h2>
+<form action="#" method="post" th:action="@{/tasks/new}" th:object="${newTask}" enctype="multipart/form-data">
+    <fieldset>
+        <label>
+            Title:
+            <input type="text" th:field="*{title}">
+        </label>
+        <br><br>
+        <label>
+            Description:
+            <input type="text" th:field="*{description}">
+        </label>
+        <br><br>
+        <label>
+            Project:
+            <input type="text" th:field="*{project}">
+        </label>
+        <br><br>
+        <label>
+            Attachment
+            <input type="file" name="attachment">
+        </label>
+    </fieldset>
+    <button type="submit">Add task</button>
+</form>

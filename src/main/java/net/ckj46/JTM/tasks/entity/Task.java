@@ -14,6 +14,7 @@ import java.util.Set;
 @Table("tasks")
 @Slf4j
 public class Task {
+
     @Id
     private Long id;
 
@@ -37,16 +38,16 @@ public class Task {
         this.editedAt = editedAt;
     }
 
-    public Set<Attachment> getAttachments(){
+    public Set<Attachment> getAttachments() {
         return attachments;
     }
 
-    public void setAttachments(Set<Attachment> attachments){
+    public void setAttachments(Set<Attachment> attachments) {
         this.attachments = attachments;
     }
 
-    public void addAttachment(Attachment attachment){
-        log.info("Attachment: {} is added to task: {}",attachment.getFilename(), id);
+    public void addAttachment(Attachment attachment) {
+        log.info("Attachment: {} is added to task: {}", attachment.getFileName(), id);
         this.attachments.add(attachment);
     }
 }

@@ -21,7 +21,7 @@ public class Comment {
     private LocalDateTime createdAt;
     private LocalDateTime editedAt;
 
-    public void Comment(String text){
+    public void Comment(String text) {
         this.text = text;
         this.createdAt = LocalDateTime.now();
         this.editedAt = LocalDateTime.now();

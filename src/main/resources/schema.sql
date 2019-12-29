@@ -12,9 +12,9 @@ CREATE TABLE tasks(
 
 CREATE TABLE attachments(
     id IDENTITY,
-    filename VARCHAR(100),
-    type VARCHAR(1),
-    ownerId NUMERIC,
+    file_name VARCHAR(100),
+    -- type VARCHAR(1),
+    -- ownerId NUMERIC,
     created_at TIMESTAMP,
     tasks NUMERIC,
     FOREIGN KEY (tasks) REFERENCES tasks(id)
