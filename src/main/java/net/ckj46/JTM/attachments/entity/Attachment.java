@@ -2,7 +2,9 @@ package net.ckj46.JTM.attachments.entity;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.EnableMBeanExport;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDateTime;
@@ -16,13 +18,13 @@ public class Attachment {
     private Long id;
     private String fileName;
     private LocalDateTime createdAt;
-
-    private int tasks = 1;
+    private Long tasks;
     // Set<Comment> comments = null;
 
-    public Attachment(String fileName) {
+    public Attachment(String fileName, Long tasks) {
         this.fileName = fileName;
         this.createdAt = LocalDateTime.now();
+        this.tasks = tasks;
         // this.comments = new LinkedHashSet<>();
     }
 

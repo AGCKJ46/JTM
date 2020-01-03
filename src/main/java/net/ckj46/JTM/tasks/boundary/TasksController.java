@@ -113,7 +113,7 @@ public class TasksController {
         log.info("Adding attachment: {} to a task: {}", file.getOriginalFilename(), taskId);
 
         Task task = tasksService.fetchTaskById(taskId);
-        task.addAttachment(new Attachment(file.getOriginalFilename()));
+        task.addAttachment(new Attachment(file.getOriginalFilename(), taskId));
         attachmentService.addAttachment(file, task.getId());
         tasksService.saveTask(task);
 

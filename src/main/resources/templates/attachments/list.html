@@ -25,7 +25,7 @@
                 </h3>
             </td>
             <td align="right">
-                <form action="#" method="get" th:action="@{tasks/{id}/attachments/addnew(id=${taskId})}">
+                <form action="#" method="get" th:action="@{/tasks/{id}/attachments/addnew/(id=${taskId})}">
                     <button type="submit" class="btn btn-primary">Add new attachment</button>
                 </form>
             </td>
@@ -45,14 +45,12 @@
             <td th:text="${attachment.fileName}"></td>
             <td th:text="${attachment.createdAt}"></td>
             <td>
-                <form action="#" method="post"
-                      th:action="@{/tasks/attachments/delete/{attachmentId}(attachmentId=${attachment.id})}">
+                <form action="#" method="post" th:action="@{/tasks/attachments/delete/{attachmentId}(attachmentId=${attachment.id})}">
                     <button type="submit" class="btn btn-danger">Delete</button>
                 </form>
             </td>
             <td>
-                <form action="#" method="get"
-                      th:action="@{/tasks/attachments/comments/{attachmentId}(attachmentId=${attachment.id})}">
+                <form action="#" method="get" th:action="@{/tasks/attachments/comments/{attachmentId}(attachmentId=${attachment.id})}">
                     <button type="submit" class="btn btn-primary">Comments</button>
                 </form>
             </td>

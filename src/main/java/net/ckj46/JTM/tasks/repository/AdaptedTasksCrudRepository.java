@@ -1,6 +1,7 @@
 package net.ckj46.JTM.tasks.repository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.ckj46.JTM.app.exceptions.NotFoundException;
 import net.ckj46.JTM.tasks.entity.Task;
 import org.springframework.context.annotation.Primary;
@@ -12,7 +13,7 @@ import java.util.stream.StreamSupport;
 
 import static java.util.stream.Collectors.toList;
 
-
+@Slf4j
 @Primary
 @RequiredArgsConstructor
 @Repository
@@ -33,9 +34,11 @@ public class AdaptedTasksCrudRepository implements TasksRepository {
 
     @Override
     public Task fetchById(Long id) {
-        return tasksCrudRepository
+        Task task = tasksCrudRepository
                 .findById(id)
                 .orElseThrow(() -> new NotFoundException("Cannot find task with id: " + id));
+        log.info("fetchTaskById - taskId: {}", task.toString());
+        return task;
     }
 
     @Override

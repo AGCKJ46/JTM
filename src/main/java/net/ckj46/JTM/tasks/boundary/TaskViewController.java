@@ -31,7 +31,9 @@ public class TaskViewController {
 
     @GetMapping("/tasks/{taskId}/attachments")
     public String attachmentsPage(Model model, @PathVariable Long taskId) {
+        log.info("attachmentsPage - taskId: {}", taskId);
         Task task = tasksService.fetchTaskById(taskId);
+        log.info("attachmentsPage - task {}", task.toString());
         model.addAttribute("taskId", task.getId());
         model.addAttribute("taskTitle", task.getTitle());
         model.addAttribute("attachments", task.getAttachments());

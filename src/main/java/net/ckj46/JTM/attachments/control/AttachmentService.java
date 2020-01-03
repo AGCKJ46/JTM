@@ -20,7 +20,7 @@ public class AttachmentService {
 
     public void addAttachment(MultipartFile attachment, Long taskId) throws IOException {
         log.info("addAttachment: {}", attachment.getOriginalFilename());
-        attachmentsRepository.add(new Attachment(attachment.getOriginalFilename()));
+        attachmentsRepository.add(new Attachment(attachment.getOriginalFilename(), taskId));
         storageService.saveFile(taskId, attachment);
     }
 

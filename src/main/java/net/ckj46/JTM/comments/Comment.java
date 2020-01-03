@@ -16,8 +16,6 @@ public class Comment {
     private Long id;
 
     private String text;
-    // private CommentType type;
-    // private Long ownerId;
     private LocalDateTime createdAt;
     private LocalDateTime editedAt;
 

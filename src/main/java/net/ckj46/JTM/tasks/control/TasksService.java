@@ -1,5 +1,6 @@
 package net.ckj46.JTM.tasks.control;
 
+import lombok.extern.slf4j.Slf4j;
 import net.ckj46.JTM.app.sys.Clock;
 import net.ckj46.JTM.attachments.control.AttachmentService;
 import net.ckj46.JTM.attachments.entity.Attachment;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class TasksService {
     private final TasksRepository tasksRepository;
@@ -39,7 +41,7 @@ public class TasksService {
 
         if (file != null && !file.isEmpty()) {
             attachmentService.addAttachment(file, task.getId());
-            task.addAttachment(new Attachment(file.getOriginalFilename()));
+            task.addAttachment(new Attachment(file.getOriginalFilename(), task.getId()));
             tasksRepository.save(task); // TODO save -> update
         }
 
@@ -70,6 +72,7 @@ public class TasksService {
     }
 
     public Task fetchTaskById(Long taskId) {
+        log.info("fetchTaskById - taskId: {}", taskId);
         return tasksRepository.fetchById(taskId);
     }
 
