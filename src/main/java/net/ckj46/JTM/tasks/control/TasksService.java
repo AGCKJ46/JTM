@@ -1,9 +1,10 @@
 package net.ckj46.JTM.tasks.control;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.ckj46.JTM.app.sys.Clock;
-import net.ckj46.JTM.attachments.control.AttachmentService;
 import net.ckj46.JTM.attachments.entity.Attachment;
+import net.ckj46.JTM.attachments.repository.StorageService;
 import net.ckj46.JTM.tasks.entity.Task;
 import net.ckj46.JTM.tasks.repository.TasksRepository;
 import org.springframework.stereotype.Service;
@@ -16,16 +17,11 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class TasksService {
     private final TasksRepository tasksRepository;
-    private final AttachmentService attachmentService;
+    private final StorageService storageService;
     private final Clock clock;
-
-    public TasksService(TasksRepository tasksRepository, AttachmentService attachmentService, Clock clock) {
-        this.tasksRepository = tasksRepository;
-        this.attachmentService = attachmentService;
-        this.clock = clock;
-    }
 
     // TODO wywalić file
     public Task addTask(String title, String description, String project, int prio, MultipartFile file) throws IOException {
@@ -40,9 +36,9 @@ public class TasksService {
         tasksRepository.add(task);
 
         if (file != null && !file.isEmpty()) {
-            attachmentService.addAttachment(file, task.getId());
+            storageService.saveFile(task.getId(), file);
             task.addAttachment(new Attachment(file.getOriginalFilename(), task.getId()));
-            tasksRepository.save(task); // TODO save -> update
+            tasksRepository.save(task);
         }
 
         return task;
@@ -68,7 +64,9 @@ public class TasksService {
         Task task = tasksRepository.fetchById(taskId);
         Set<Attachment> attachments = task.getAttachments();
         tasksRepository.deleteById(taskId);
-        attachmentService.delAttachments(attachments, taskId);
+        for (Attachment attachment: attachments) {
+            storageService.deleteFile(attachment.getFileName(), taskId);
+        }
     }
 
     public Task fetchTaskById(Long taskId) {

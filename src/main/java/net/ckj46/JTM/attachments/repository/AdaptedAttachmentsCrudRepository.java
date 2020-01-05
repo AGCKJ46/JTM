@@ -44,7 +44,7 @@ public class AdaptedAttachmentsCrudRepository implements AttachmentsRepository {
         attachmentsCrudRepository
                 .findById(id)
                 .ifPresentOrElse(task -> attachmentsCrudRepository.deleteById(task.getId()), () -> {
-                    throw new NotFoundException("Cannot find task with id: " + id);
+                    throw new NotFoundException("Cannot find attachment with id: " + id);
                 });
     }
 

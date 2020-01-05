@@ -29,6 +29,11 @@
                     <button type="submit" class="btn btn-primary">Add new attachment</button>
                 </form>
             </td>
+            <td align="right">
+                <form action="#" method="get" th:action="@{/}">
+                    <button type="submit" class="btn btn-primary">Tasks list</button>
+                </form>
+            </td>
         </tr>
     </table>
     <table class="table table-striped thead-dark">
@@ -45,7 +50,7 @@
             <td th:text="${attachment.fileName}"></td>
             <td th:text="${attachment.createdAt}"></td>
             <td>
-                <form action="#" method="post" th:action="@{/tasks/attachments/delete/{attachmentId}(attachmentId=${attachment.id})}">
+                <form action="#" method="post" th:action="@{/tasks/{taskId}/attachments/{attachmentId}/delete(attachmentId=${attachment.id},taskId=${taskId})}">
                     <button type="submit" class="btn btn-danger">Delete</button>
                 </form>
             </td>

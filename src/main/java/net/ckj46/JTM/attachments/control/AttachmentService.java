@@ -24,23 +24,23 @@ public class AttachmentService {
         storageService.saveFile(taskId, attachment);
     }
 
-    // TODO dodać wskazanie na taskId - zastosowanie: kasowanie pojedyńczego załącznika
-    public void delAttachment(String fileName, Long attachmentId) throws IOException {
-        log.info("delAttachment: {}", fileName);
+    public void delAttachment(Long attachmentId, String fileName, Long taskId) throws IOException {
+        log.info("delAttachment - fileName: {}, attachmentId: {}, taskId: {}", fileName, attachmentId, taskId);
         attachmentsRepository.deleteById(attachmentId);
-        // storageService.deleteFile(fileName, taskId);
+        storageService.deleteFile(fileName, taskId);
     }
 
     // TODO tu powinno byc kasowane wszystko co znajduje się w katalogu oraz sam katalog
-    // TODO kasowanie z repo
     public void delAttachments(Set<Attachment> attachments, Long taskId) throws IOException {
         log.info("delAttachments - taskId: {}", taskId);
         for (Attachment a : attachments) {
-            delAttachment(a.getFileName(), taskId);
+            delAttachment(a.getId(), a.getFileName(), taskId);
         }
     }
 
     public Attachment fetchAttachmentById(Long attachmentId) {
-        return null;
+        log.info("fetchAttachmentById - attachmentId: {}", attachmentId );
+        Attachment attachment = attachmentsRepository.fetchById(attachmentId);
+        return attachment;
     }
 }

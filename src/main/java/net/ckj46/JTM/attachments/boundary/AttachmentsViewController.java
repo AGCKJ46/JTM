@@ -36,4 +36,13 @@ public class AttachmentsViewController {
         return "redirect:/tasks/" + taskId + "/attachments";
     }
 
+    @PostMapping("/tasks/{taskId}/attachments/{attachmentId}/delete")
+    public String deleteAttachmentAction(@PathVariable Long taskId, @PathVariable Long attachmentId) throws IOException {
+        log.info("deleteAttachmentAction - taskId: {}, attachmentId: {}", taskId, attachmentId);
+        Attachment attachment = attachmentService.fetchAttachmentById(attachmentId);
+        log.info("deleteAttachmentAction - attachment: {}", attachment);
+        attachmentService.delAttachment(attachmentId, attachment.getFileName(), taskId);
+        return "redirect:/tasks/" + taskId + "/attachments";
+    }
+
 }
