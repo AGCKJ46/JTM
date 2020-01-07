@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.ckj46.JTM.attachments.control.AttachmentService;
 import net.ckj46.JTM.attachments.entity.Attachment;
+import net.ckj46.JTM.tags.control.TagsService;
+import net.ckj46.JTM.tags.entity.Tag;
 import net.ckj46.JTM.tasks.control.TasksService;
 import net.ckj46.JTM.tasks.entity.Task;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -22,6 +26,7 @@ public class TaskViewController {
 
     private final TasksService tasksService;
     private final AttachmentService attachmentService;
+    private final TagsService tagsService;
 
     @GetMapping("/")
     public String tasksPage(Model model) {
@@ -55,6 +60,10 @@ public class TaskViewController {
     @GetMapping("/tasks/addnew")
     public String addNewTaskPage(Model model) {
         model.addAttribute("newTask", new CreateTaskRequest());
+        List<Tag> tags = new LinkedList<>();
+        tags.add(new Tag(""));
+        tags.addAll(tagsService.fetchAll());
+        model.addAttribute("tags", tags);
         return "tasks/addnew";
     }
 
@@ -62,6 +71,11 @@ public class TaskViewController {
     public String addTaskAction(@ModelAttribute("newTask") CreateTaskRequest request) throws IOException {
         log.info("New task is adding now...");
         Task task = tasksService.addTask(request.title, request.description, request.project, request.prio, null);
+
+        Tag tag = tagsService.fetchById(request.tagId);
+        task.addTag(tag);
+        tasksService.saveTask(task);
+
         return "redirect:/";
     }
 

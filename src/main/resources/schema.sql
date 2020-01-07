@@ -1,4 +1,8 @@
 DROP TABLE IF EXISTS tasks;
+DROP TABLE IF EXISTS attachments;
+DROP TABLE IF EXISTS comments;
+DROP TABLE IF EXISTS tags;
+DROP TABLE IF EXISTS tags_tasks;
 
 CREATE TABLE tasks(
     id IDENTITY,
@@ -27,4 +31,20 @@ CREATE TABLE comments(
     edited_at TIMESTAMP,
     attachments NUMERIC,
     FOREIGN KEY (attachments) REFERENCES attachments(id)
+);
+
+CREATE TABLE tags
+(
+    id IDENTITY,
+    name VARCHAR(64),
+    created_at TIMESTAMP,
+    edited_at TIMESTAMP
+);
+
+CREATE TABLE tags_tasks
+(
+    tags NUMERIC NOT NULL,
+    tasks NUMERIC NOT NULL,
+    FOREIGN KEY (tags) REFERENCES tags(id),
+    FOREIGN KEY (tasks) REFERENCES tasks(id)
 );

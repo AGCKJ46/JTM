@@ -20,6 +20,12 @@
                    placeholder="Description">
         </div>
         <div class="form-group">
+            <label for="tag">Tag:</label>
+            <select type="text" class="form-control" id="tag" th:field="*{tagId}" placeholder="Tag">
+                <option th:each="tag: ${tags}" th:value="${tag.id}" th:text="${tag.name}"></option>
+            </select>
+        </div>
+        <div class="form-group">
             <label for="project">Project:</label>
             <input type="text" class="form-control" id="project" th:field="*{project}" placeholder="Project">
         </div>

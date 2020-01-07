@@ -8,4 +8,5 @@ class CreateTaskRequest {
     String description;
     String project;
     int prio;
+    Long tagId;
 }

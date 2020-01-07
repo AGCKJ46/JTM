@@ -32,7 +32,6 @@ import java.util.stream.Collectors;
 public class TasksController {
     private final TasksService tasksService;
     private final AttachmentService attachmentService;
-
     private final StorageService storageService; // TODO TaskController nie wpowinien bezpośrednio korzystać z StorageService
 
     @PostConstruct
