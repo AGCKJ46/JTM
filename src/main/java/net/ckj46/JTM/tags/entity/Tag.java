@@ -1,17 +1,19 @@
 package net.ckj46.JTM.tags.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
+import lombok.NoArgsConstructor;
 
+
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
-@Table("tags")
+@NoArgsConstructor
+@Table(name = "tags")
+@Entity
 public class Tag {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;

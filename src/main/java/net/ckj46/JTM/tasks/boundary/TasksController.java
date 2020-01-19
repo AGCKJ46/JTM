@@ -6,6 +6,7 @@ import net.ckj46.JTM.app.exceptions.NotFoundException;
 import net.ckj46.JTM.attachments.control.AttachmentService;
 import net.ckj46.JTM.attachments.entity.Attachment;
 import net.ckj46.JTM.attachments.repository.StorageService;
+import net.ckj46.JTM.tags.control.TagsService;
 import net.ckj46.JTM.tasks.control.TasksService;
 import net.ckj46.JTM.tasks.entity.Task;
 import org.springframework.core.io.Resource;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,6 +33,7 @@ import java.util.stream.Collectors;
 @CrossOrigin
 public class TasksController {
     private final TasksService tasksService;
+    private final TagsService tagsService;
     private final AttachmentService attachmentService;
     private final StorageService storageService; // TODO TaskController nie wpowinien bezpośrednio korzystać z StorageService
 
@@ -39,6 +42,7 @@ public class TasksController {
         tasksService.addTask("zadanie domowe M2", "1. rozszerzyć obiekt Task 2. pakietowanie", "Kurs Springa", 1, null);
         tasksService.addTask("youtube od Przemka Bykowskiego", "", "Kurs Springa", 1, null);
         tasksService.addTask("wymienić zamek w drzwiach do garażu", "", "Dom", 2, null);
+        tasksService.addTask("odnowić prenumeratę Programista","", "Dom", 2, null);
     }
 
     @GetMapping
@@ -51,7 +55,7 @@ public class TasksController {
                     .map(tasksService::filterAllByQuery)
                     .orElseGet(tasksService::fetchAll)
                     .stream()
-                    .map(this::toTaskResponse)
+                    .map(task->TaskResponse.from(task, task.getTagRefs().stream().map(tagRef->tagsService.fetchById(tagRef.getTags())).collect(Collectors.toSet())))
                     .collect(Collectors.toList());
 
             response.setStatus(HttpStatus.OK.value());
@@ -67,13 +71,32 @@ public class TasksController {
         log.info("Fetching a task: {}", id);
         TaskResponse taskResponse = null;
         try {
-            taskResponse = toTaskResponse(tasksService.fetchTaskById(id));
+            Task task = tasksService.fetchTaskById(id);
+            taskResponse = TaskResponse.from(task, task.getTagRefs().stream().map(tagRef->tagsService.fetchById(tagRef.getTags())).collect(Collectors.toSet()));
             response.setStatus(HttpStatus.OK.value());
         } catch (NotFoundException e) {
             log.error("Unable to find a task: {} - error: {}", id, e.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value(), e.getMessage());
         }
         return taskResponse;
+    }
+
+    @GetMapping(path = "/title/{title}")
+    public List<TaskResponse> getTaskByTitle(HttpServletResponse response, @PathVariable String title) throws IOException {
+        log.info("getTaskByTitle: {}", title);
+        List<TaskResponse> taskResponses = new LinkedList<>();
+        try {
+            List<Task> tasks = tasksService.findTaskByTitle(title);
+            for (Task task: tasks) {
+                TaskResponse taskResponse = TaskResponse.from(task, task.getTagRefs().stream().map(tagRef->tagsService.fetchById(tagRef.getTags())).collect(Collectors.toSet()));
+                taskResponses.add(taskResponse);
+            }
+            response.setStatus(HttpStatus.OK.value());
+        } catch (NotFoundException e) {
+            log.error("Unable to find a task with title: {} - error: {}", title, e.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value(), e.getMessage());
+        }
+        return taskResponses;
     }
 
     // TODO przenieść do AtachmentControler?
@@ -146,18 +169,5 @@ public class TasksController {
         return ResponseEntity
                 .noContent()
                 .build();
-    }
-
-    private TaskResponse toTaskResponse(Task task) {
-        return new TaskResponse(
-                task.getId(),
-                task.getTitle(),
-                task.getDescription(),
-                task.getProject(),
-                task.getPrio(),
-                task.getCreatedAt(),
-                task.getEditedAt(),
-                task.getAttachments()
-        );
     }
 }

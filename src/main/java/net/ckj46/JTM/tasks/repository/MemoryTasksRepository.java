@@ -71,6 +71,11 @@ public class MemoryTasksRepository implements TasksRepository {
                 .findFirst();
     }
 
+    @Override
+    public List<Task> findByTitle(String title){
+        throw new UnsupportedOperationException();
+    }
+
     private Task fetchAllAttachments(Task task) throws IOException {
         return fetchById(task.getId());
     }

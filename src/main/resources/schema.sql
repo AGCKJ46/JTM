@@ -18,8 +18,8 @@ CREATE TABLE attachments(
     id IDENTITY,
     file_name VARCHAR(100),
     created_at TIMESTAMP,
-    tasks NUMERIC,
-    FOREIGN KEY (tasks) REFERENCES tasks(id)
+    task_id NUMERIC,
+    FOREIGN KEY (task_id) REFERENCES tasks(id)
 );
 
 CREATE TABLE comments(

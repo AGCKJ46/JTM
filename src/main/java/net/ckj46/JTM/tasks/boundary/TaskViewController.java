@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -30,7 +31,14 @@ public class TaskViewController {
 
     @GetMapping("/")
     public String tasksPage(Model model) {
-        model.addAttribute("tasks", tasksService.fetchAll());
+        model.addAttribute("tasks", tasksService
+                                                    .fetchAll()
+                                                    .stream()
+                                                    .map(task->TaskViewResponse.from(task, task.getTagRefs()
+                                                                                            .stream()
+                                                                                            .map(tagRef ->tagsService.fetchById(tagRef.getTags()))
+                                                                                            .collect(Collectors.toSet())))
+                                                    .collect(Collectors.toList()));
         return "tasks/list";
     }
 
@@ -60,10 +68,12 @@ public class TaskViewController {
     @GetMapping("/tasks/addnew")
     public String addNewTaskPage(Model model) {
         model.addAttribute("newTask", new CreateTaskRequest());
+
         List<Tag> tags = new LinkedList<>();
         tags.add(new Tag(""));
         tags.addAll(tagsService.fetchAll());
         model.addAttribute("tags", tags);
+
         return "tasks/addnew";
     }
 
@@ -73,6 +83,8 @@ public class TaskViewController {
         Task task = tasksService.addTask(request.title, request.description, request.project, request.prio, null);
 
         Tag tag = tagsService.fetchById(request.tagId);
+        task.addTag(tag);
+        tag = tagsService.fetchById(2L);
         task.addTag(tag);
         tasksService.saveTask(task);
 

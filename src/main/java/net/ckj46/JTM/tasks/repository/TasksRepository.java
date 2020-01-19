@@ -17,4 +17,6 @@ public interface TasksRepository {
     void deleteById(Long id);
 
     void save(Task task);
+
+    List<Task> findByTitle(String title);
 }

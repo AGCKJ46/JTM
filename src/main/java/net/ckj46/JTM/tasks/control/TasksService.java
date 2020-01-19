@@ -5,12 +5,15 @@ import lombok.extern.slf4j.Slf4j;
 import net.ckj46.JTM.app.sys.Clock;
 import net.ckj46.JTM.attachments.entity.Attachment;
 import net.ckj46.JTM.attachments.repository.StorageService;
+import net.ckj46.JTM.tags.entity.Tag;
+import net.ckj46.JTM.tags.entity.TagRef;
 import net.ckj46.JTM.tasks.entity.Task;
 import net.ckj46.JTM.tasks.repository.TasksRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -76,5 +79,10 @@ public class TasksService {
 
     public void saveTask(Task task) {
         tasksRepository.save(task);
+    }
+
+    public List<Task> findTaskByTitle(String title) {
+        log.info("findTaskByTitle - title: {}", title);
+        return tasksRepository.findByTitle(title);
     }
 }

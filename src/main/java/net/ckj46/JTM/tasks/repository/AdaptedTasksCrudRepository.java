@@ -72,4 +72,9 @@ public class AdaptedTasksCrudRepository implements TasksRepository {
         tasksCrudRepository.save(task);
     }
 
+    @Override
+    public List<Task> findByTitle(String title) {
+        return tasksCrudRepository.findByTitle(title);
+    }
+
 }

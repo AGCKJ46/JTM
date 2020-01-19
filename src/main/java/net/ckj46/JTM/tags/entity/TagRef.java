@@ -1,13 +1,19 @@
 package net.ckj46.JTM.tags.entity;
 
-import org.springframework.data.relational.core.mapping.Table;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Table("tags_tasks")
+import javax.persistence.*;
+
+@Data
+@NoArgsConstructor
+@Table(name = "tags_tasks")
+@Entity
 public class TagRef {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     Long tags;
-
-    public TagRef() {
-    }
 
     public TagRef(Tag tag) {
         this.tags = tag.getId();

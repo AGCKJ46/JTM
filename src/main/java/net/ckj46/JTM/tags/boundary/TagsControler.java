@@ -24,6 +24,7 @@ public class TagsControler {
     void init() {
         tagsService.addTag("WAIT");
         tagsService.addTag("FIN");
+        // INSERT INTO tags_tasks VALUES (1, 4);
     }
 
     @PostMapping

@@ -1,16 +1,17 @@
 package net.ckj46.JTM.comments;
 
-
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 @Data
-@Table("tasks")
-@Slf4j
+@NoArgsConstructor
+@Table(name = "comments")
+@Entity
 public class Comment {
     @Id
     private Long id;

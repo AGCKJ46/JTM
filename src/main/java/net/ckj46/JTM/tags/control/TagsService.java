@@ -6,7 +6,8 @@ import net.ckj46.JTM.tags.entity.Tag;
 import net.ckj46.JTM.tags.repository.TagsRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Set;
+
 
 @Slf4j
 @Service
@@ -19,7 +20,7 @@ public class TagsService {
         tagsRepository.addTag(new Tag(name));
     }
 
-    public List<Tag> fetchAll() {
+    public Set<Tag> fetchAll() {
         log.info("fetchAll");
         return tagsRepository.fetchAll();
     }

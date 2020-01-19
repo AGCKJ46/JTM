@@ -1,23 +1,26 @@
 package net.ckj46.JTM.tasks.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.ckj46.JTM.attachments.entity.Attachment;
 import net.ckj46.JTM.tags.entity.Tag;
 import net.ckj46.JTM.tags.entity.TagRef;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Data
-@Table("tasks")
 @Slf4j
+@NoArgsConstructor
+@Table(name = "tasks")
+@Entity
 public class Task {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String title;
@@ -29,8 +32,10 @@ public class Task {
     private LocalDateTime createdAt;
     private LocalDateTime editedAt;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "taskId")
     private Set<Attachment> attachments = new HashSet<>();
-    private Set<TagRef> tagRefs = new HashSet<>();
+    private transient Set<TagRef> tagRefs = new HashSet<>();
 
     public Task(String title, String description, String project, int prio, LocalDateTime createdAt, LocalDateTime editedAt) {
         this.title = title;

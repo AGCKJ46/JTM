@@ -11,14 +11,13 @@ server:
 file.system.storage:
   path: "J:/JAVA/JTM_fsss"
 
-spring:
-  h2:
-    console:
-      enabled: true
+spring.h2.console.enabled: true
+spring.jpa.hibernate.ddl-auto: none
 
 logging:
   level:
     org.springframework.jdbc.core: DEBUG
+
 ---
 spring.profiles: prod
 server:

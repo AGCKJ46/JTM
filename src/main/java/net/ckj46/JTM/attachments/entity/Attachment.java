@@ -1,30 +1,30 @@
 package net.ckj46.JTM.attachments.entity;
 
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.EnableMBeanExport;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
-@Slf4j
-@Table("attachments")
+@NoArgsConstructor
+@Table(name = "attachments")
+@Entity
 public class Attachment {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String fileName;
     private LocalDateTime createdAt;
-    private Long tasks;
+    private Long taskId;
     // Set<Comment> comments = null;
 
     public Attachment(String fileName, Long tasks) {
         this.fileName = fileName;
         this.createdAt = LocalDateTime.now();
-        this.tasks = tasks;
+        this.taskId = tasks;
         // this.comments = new LinkedHashSet<>();
     }
 

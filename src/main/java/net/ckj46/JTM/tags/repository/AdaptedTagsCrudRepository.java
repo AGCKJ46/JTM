@@ -7,10 +7,9 @@ import net.ckj46.JTM.tags.entity.Tag;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
-import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @Primary
@@ -26,8 +25,8 @@ public class AdaptedTagsCrudRepository implements TagsRepository{
     }
 
     @Override
-    public List<Tag> fetchAll() {
-        return StreamSupport.stream(tagsCrudRepository.findAll().spliterator(), false).collect(toList());
+    public Set<Tag> fetchAll() {
+        return StreamSupport.stream(tagsCrudRepository.findAll().spliterator(), false).collect(Collectors.toSet());
     }
 
     @Override

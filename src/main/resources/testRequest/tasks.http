@@ -24,7 +24,10 @@ GET localhost:8080/api/tasks
 GET localhost:8080/api/tasks/4
 
 ###
-DELETE localhost:8080/api/tasks/4
+GET localhost:8080/api/tasks/title/programista
+
+###
+DELETE localhost:8080/api/tasks/2
 
 ###
 PUT localhost:8080/api/tasks/3
