@@ -55,7 +55,7 @@ public class TasksController {
                     .map(tasksService::filterAllByQuery)
                     .orElseGet(tasksService::fetchAll)
                     .stream()
-                    .map(task->TaskResponse.from(task, task.getTagRefs().stream().map(tagRef->tagsService.fetchById(tagRef.getTags())).collect(Collectors.toSet())))
+                    .map(task->TaskResponse.from(task, task.getTags()))
                     .collect(Collectors.toList());
 
             response.setStatus(HttpStatus.OK.value());
@@ -72,7 +72,7 @@ public class TasksController {
         TaskResponse taskResponse = null;
         try {
             Task task = tasksService.fetchTaskById(id);
-            taskResponse = TaskResponse.from(task, task.getTagRefs().stream().map(tagRef->tagsService.fetchById(tagRef.getTags())).collect(Collectors.toSet()));
+            taskResponse = TaskResponse.from(task, task.getTags());
             response.setStatus(HttpStatus.OK.value());
         } catch (NotFoundException e) {
             log.error("Unable to find a task: {} - error: {}", id, e.getMessage());
@@ -88,7 +88,7 @@ public class TasksController {
         try {
             List<Task> tasks = tasksService.findTaskByTitle(title);
             for (Task task: tasks) {
-                TaskResponse taskResponse = TaskResponse.from(task, task.getTagRefs().stream().map(tagRef->tagsService.fetchById(tagRef.getTags())).collect(Collectors.toSet()));
+                TaskResponse taskResponse = TaskResponse.from(task, task.getTags());
                 taskResponses.add(taskResponse);
             }
             response.setStatus(HttpStatus.OK.value());

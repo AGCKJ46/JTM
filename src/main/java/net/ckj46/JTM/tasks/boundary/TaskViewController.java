@@ -34,10 +34,7 @@ public class TaskViewController {
         model.addAttribute("tasks", tasksService
                                                     .fetchAll()
                                                     .stream()
-                                                    .map(task->TaskViewResponse.from(task, task.getTagRefs()
-                                                                                            .stream()
-                                                                                            .map(tagRef ->tagsService.fetchById(tagRef.getTags()))
-                                                                                            .collect(Collectors.toSet())))
+                                                    .map(task->TaskViewResponse.from(task, task.getTags()))
                                                     .collect(Collectors.toList()));
         return "tasks/list";
     }

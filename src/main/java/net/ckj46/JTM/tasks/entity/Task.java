@@ -35,7 +35,14 @@ public class Task {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "taskId")
     private Set<Attachment> attachments = new HashSet<>();
-    private transient Set<TagRef> tagRefs = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "tags_tasks",
+            joinColumns = @JoinColumn(name = "task_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private Set<Tag> tags = new HashSet<>();
 
     public Task(String title, String description, String project, int prio, LocalDateTime createdAt, LocalDateTime editedAt) {
         this.title = title;
@@ -61,11 +68,11 @@ public class Task {
 
     public void addTag(Tag tag) {
         log.info("Tag: {} is added to task: {}", tag.getId(), id);
-        this.tagRefs.add(new TagRef(tag));
+        this.tags.add(tag);
     }
 
     public void removeTag(Tag tag) {
         log.info("Tag: {} is removed from task: {}", tag.getId(), id);
-        this.tagRefs.remove(new TagRef(tag));
+        this.tags.remove(tag);
     }
 }

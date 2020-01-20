@@ -43,8 +43,8 @@ CREATE TABLE tags
 
 CREATE TABLE tags_tasks
 (
-    tags NUMERIC NOT NULL,
-    tasks NUMERIC NOT NULL,
-    FOREIGN KEY (tags) REFERENCES tags(id),
-    FOREIGN KEY (tasks) REFERENCES tasks(id)
+    tag_id NUMERIC NOT NULL,
+    task_id NUMERIC NOT NULL,
+    FOREIGN KEY (tag_id) REFERENCES tags(id),
+    FOREIGN KEY (task_id) REFERENCES tasks(id)
 );
