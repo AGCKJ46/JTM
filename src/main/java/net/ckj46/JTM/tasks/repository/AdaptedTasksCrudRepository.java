@@ -34,10 +34,10 @@ public class AdaptedTasksCrudRepository implements TasksRepository {
 
     @Override
     public Task fetchById(Long id) {
+        log.info("fetchTaskById - taskId: {}",id);
         Task task = tasksCrudRepository
                 .findById(id)
                 .orElseThrow(() -> new NotFoundException("Cannot find task with id: " + id));
-        log.info("fetchTaskById - taskId: {}", task.toString());
         return task;
     }
 

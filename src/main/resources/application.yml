@@ -12,7 +12,7 @@ file.system.storage:
   path: "J:/JAVA/JTM_fsss"
 
 spring.h2.console.enabled: true
-spring.jpa.hibernate.ddl-auto: none
+spring.jpa.hibernate.ddl-auto: create-drop
 
 logging:
   level:

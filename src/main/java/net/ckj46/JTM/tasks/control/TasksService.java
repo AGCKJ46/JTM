@@ -7,6 +7,7 @@ import net.ckj46.JTM.attachments.entity.Attachment;
 import net.ckj46.JTM.attachments.repository.StorageService;
 import net.ckj46.JTM.tags.entity.Tag;
 import net.ckj46.JTM.tags.entity.TagRef;
+import net.ckj46.JTM.tags.repository.TagsRepository;
 import net.ckj46.JTM.tasks.entity.Task;
 import net.ckj46.JTM.tasks.repository.TasksRepository;
 import org.springframework.stereotype.Service;
@@ -24,10 +25,13 @@ import java.util.stream.Collectors;
 public class TasksService {
     private final TasksRepository tasksRepository;
     private final StorageService storageService;
+    private final TagsRepository tagsRepository;
+
     private final Clock clock;
 
     // TODO wywalić file
     public Task addTask(String title, String description, String project, int prio, MultipartFile file) throws IOException {
+        log.info("addTask - title: {}., description: {}, project: {}, prio: {}", title, description, project, prio);
         Task task = new Task(
                 title,
                 description,
@@ -45,6 +49,13 @@ public class TasksService {
         }
 
         return task;
+    }
+
+    public void addTag(Long tagId, Long taskId){
+        Task task = tasksRepository.fetchById(taskId);
+        Tag tag = tagsRepository.fetchById(tagId);
+        task.addTag(tag);
+        tasksRepository.save(task);
     }
 
     public void updateTask(Long id, String title, String description, String project, int prio) {

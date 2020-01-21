@@ -39,10 +39,16 @@ public class TasksController {
 
     @PostConstruct
     void init() throws IOException {
+        log.info("init");
         tasksService.addTask("zadanie domowe M2", "1. rozszerzyć obiekt Task 2. pakietowanie", "Kurs Springa", 1, null);
         tasksService.addTask("youtube od Przemka Bykowskiego", "", "Kurs Springa", 1, null);
         tasksService.addTask("wymienić zamek w drzwiach do garażu", "", "Dom", 2, null);
         tasksService.addTask("odnowić prenumeratę Programista","", "Dom", 2, null);
+
+        // tasksService.addTag(1L, 1L);
+        // tasksService.addTag(1L, 2L);
+        // tasksService.addTag(2L, 2L);
+        // tasksService.addTag(1L, 4L);
     }
 
     @GetMapping
