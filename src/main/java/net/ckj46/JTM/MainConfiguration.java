@@ -29,7 +29,7 @@ public class MainConfiguration {
 
     @Bean
     public StorageService storageService() {
-        log.info("Registering StorageService as Spring Bean!");
+        log.info("Registering StorageService as Spring Bean! Path: {}",fileSystemStorageConfigurationProperties.getPath());
         return new FileSystemStorageService(Path.of(fileSystemStorageConfigurationProperties.getPath()));
     }
 }
