@@ -2,6 +2,8 @@ package net.ckj46.JTM.tasks.boundary;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import net.ckj46.JTM.attachments.boundary.AttachmentResponse;
+import net.ckj46.JTM.attachments.entity.Attachment;
 import net.ckj46.JTM.tags.boundary.TagsResponse;
 import net.ckj46.JTM.tags.entity.Tag;
 import net.ckj46.JTM.tasks.entity.Task;
@@ -22,10 +24,10 @@ class TaskResponse {
     private int prio;
     private LocalDateTime createdAt;
     private LocalDateTime editedAt;
-    // TODO private Set attachments;
-    private List<TagsResponse> tags;
+    private Set<AttachmentResponse> attachments;
+    private Set<TagsResponse> tags;
 
-    public static TaskResponse from(Task task, Set<Tag> tags){
+    public static TaskResponse from(Task task, Set<Tag> tags, Set<Attachment> attachments){
         return new TaskResponse(
                         task.getId(),
                         task.getTitle(),
@@ -34,8 +36,11 @@ class TaskResponse {
                         task.getPrio(),
                         task.getCreatedAt(),
                         task.getEditedAt(),
+                        attachments.stream()
+                                .map((attachment)-> AttachmentResponse.from(attachment))
+                                .collect(Collectors.toSet()),
                         tags.stream()
                                 .map((tag)->TagsResponse.from(tag))
-                                .collect(Collectors.toList()));
+                                .collect(Collectors.toSet()));
     }
 }

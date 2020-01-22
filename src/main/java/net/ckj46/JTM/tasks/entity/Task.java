@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.ckj46.JTM.attachments.entity.Attachment;
 import net.ckj46.JTM.tags.entity.Tag;
-import net.ckj46.JTM.tags.entity.TagRef;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

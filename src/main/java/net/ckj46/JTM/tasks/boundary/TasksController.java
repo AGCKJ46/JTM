@@ -61,7 +61,7 @@ public class TasksController {
                     .map(tasksService::filterAllByQuery)
                     .orElseGet(tasksService::fetchAll)
                     .stream()
-                    .map(task->TaskResponse.from(task, task.getTags()))
+                    .map(task->TaskResponse.from(task, task.getTags(), task.getAttachments()))
                     .collect(Collectors.toList());
 
             response.setStatus(HttpStatus.OK.value());
@@ -78,7 +78,7 @@ public class TasksController {
         TaskResponse taskResponse = null;
         try {
             Task task = tasksService.fetchTaskById(id);
-            taskResponse = TaskResponse.from(task, task.getTags());
+            taskResponse = TaskResponse.from(task, task.getTags(), task.getAttachments());
             response.setStatus(HttpStatus.OK.value());
         } catch (NotFoundException e) {
             log.error("Unable to find a task: {} - error: {}", id, e.getMessage());
@@ -94,7 +94,7 @@ public class TasksController {
         try {
             List<Task> tasks = tasksService.findTaskByTitle(title);
             for (Task task: tasks) {
-                TaskResponse taskResponse = TaskResponse.from(task, task.getTags());
+                TaskResponse taskResponse = TaskResponse.from(task, task.getTags(), task.getAttachments());
                 taskResponses.add(taskResponse);
             }
             response.setStatus(HttpStatus.OK.value());
