@@ -18,6 +18,8 @@ public class Attachment {
 
     private String fileName;
     private LocalDateTime createdAt;
+
+    // @Column(nullable = false)
     private Long taskId;
     // Set<Comment> comments = null;
 
