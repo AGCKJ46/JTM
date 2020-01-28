@@ -42,4 +42,18 @@ class TasksCrudRepositoryTest {
         // then
         assertThat(tasks.size()).isEqualTo(1);
     }
+
+    @Test
+    public void shouldLoadView(){
+        // given
+        Task task = new Task("Kupić lodówkę", "", "Dom", 1, clock.time(), clock.time());
+
+        // when
+        tasksRepository.save(task);
+        List<TaskView> taskView = tasksRepository.findAllBy();
+
+        // then
+        assertThat(taskView.size()).isEqualTo(1);
+        assertThat(taskView.get(0).getTitle()).isEqualToIgnoringCase("Kupić lodówkę");
+    }
 }

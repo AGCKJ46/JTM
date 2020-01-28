@@ -12,6 +12,8 @@ interface TasksCrudRepository extends JpaRepository<Task, Long> {
     @EntityGraph(value = "Task.details", type = EntityGraph.EntityGraphType.LOAD)
     List<Task> findAll();
 
+    List<TaskView> findAllBy();
+
     /*
         @Modifying
         @Query("UPDATE Task SET title = :title, description = :description WHERE id = :taskId")
