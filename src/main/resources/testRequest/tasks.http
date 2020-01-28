@@ -1,4 +1,4 @@
-POST localhost:8080/api/tasks
+POST {{api}}/tasks
 Content-Type: application/json
 
 {
@@ -8,7 +8,7 @@ Content-Type: application/json
 }
 
 ###
-POST localhost:8080/api/tasks
+POST {{api}}/tasks
 Content-Type: application/json
 
 {
@@ -21,7 +21,7 @@ Content-Type: application/json
 GET localhost:8080/api/tasks
 
 ###
-GET localhost:8080/api/tasks/4
+GET localhost:8080/api/tasks/1
 
 ###
 GET localhost:8080/api/tasks/title/programista

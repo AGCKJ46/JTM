@@ -75,10 +75,10 @@ public class TasksService {
     public void deleteTaskById(Long taskId) throws IOException {
         Task task = tasksRepository.fetchById(taskId);
         Set<Attachment> attachments = task.getAttachments();
-        tasksRepository.deleteById(taskId);
         for (Attachment attachment: attachments) {
             storageService.deleteFile(attachment.getFileName(), taskId);
         }
+        tasksRepository.deleteById(taskId);
     }
 
     public Task fetchTaskById(Long taskId) {

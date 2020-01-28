@@ -15,9 +15,16 @@ import java.util.Set;
 @Slf4j
 @NoArgsConstructor
 @Table(name = "tasks")
+@NamedEntityGraph(
+    name = "Task.details",
+    attributeNodes = {
+            @NamedAttributeNode("attachments"),
+            @NamedAttributeNode("tags")
+    }
+)
+
 @Entity
 public class Task {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,8 +32,6 @@ public class Task {
     private String title;
     private String description;
     private String project;
-    // private String owner;
-    // private String assignee;
     private int prio;
     private LocalDateTime createdAt;
     private LocalDateTime editedAt;
