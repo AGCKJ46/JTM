@@ -42,13 +42,13 @@ public class AdaptedTasksCrudRepository implements TasksRepository {
     }
 
     @Override
-    public void update(Long id, String title, String description, String project, int prio, LocalDateTime editedAt) {
+    public void update(Long id, String title, String description, Long projectId, int prio, LocalDateTime editedAt) {
         tasksCrudRepository
                 .findById(id)
                 .map(task -> {
                     task.setTitle(title);
                     task.setDescription(description);
-                    task.setProject(project);
+                    task.setProjectId(projectId);
                     task.setPrio(prio);
                     task.setEditedAt(editedAt);
                     return task;

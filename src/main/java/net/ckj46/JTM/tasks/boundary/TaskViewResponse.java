@@ -17,12 +17,11 @@ public class TaskViewResponse {
     private Long id;
     private String title;
     private String description;
-    private String project;
+    private Long projectId;
     private int prio;
     private LocalDateTime createdAt;
     private LocalDateTime editedAt;
     // TODO private Set attachments;
-    // private String tags="FUCK";
     private Set<Tag> tags;
 
     public static TaskViewResponse from(Task task, Set<Tag> tags){
@@ -38,7 +37,7 @@ public class TaskViewResponse {
                 task.getId(),
                 task.getTitle(),
                 task.getDescription(),
-                task.getProject(),
+                task.getProjectId(),
                 task.getPrio(),
                 task.getCreatedAt(),
                 task.getEditedAt(),

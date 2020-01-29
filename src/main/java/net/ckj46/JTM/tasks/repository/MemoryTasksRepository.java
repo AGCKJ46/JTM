@@ -42,13 +42,13 @@ public class MemoryTasksRepository implements TasksRepository {
     }
 
     @Override
-    public void update(Long id, String title, String description, String project, int prio, LocalDateTime editedAt) {
+    public void update(Long id, String title, String description, Long projectId, int prio, LocalDateTime editedAt) {
         Task task = findById(id)
                 .orElseThrow(() -> new NotFoundException("Task with id: " + id + " not found!"));
 
         task.setTitle(title);
         task.setDescription(description);
-        task.setProject(project);
+        task.setProjectId(projectId);
         task.setPrio(prio);
         task.setEditedAt(editedAt);
     }

@@ -31,7 +31,10 @@ public class Task {
 
     private String title;
     private String description;
-    private String project;
+
+    @Column(nullable = false)
+    private Long projectId;
+
     private int prio;
     private LocalDateTime createdAt;
     private LocalDateTime editedAt;
@@ -48,10 +51,10 @@ public class Task {
     )
     private Set<Tag> tags = new HashSet<>();
 
-    public Task(String title, String description, String project, int prio, LocalDateTime createdAt, LocalDateTime editedAt) {
+    public Task(String title, String description, Long projectId, int prio, LocalDateTime createdAt, LocalDateTime editedAt) {
         this.title = title;
         this.description = description;
-        this.project = project;
+        this.projectId = projectId;
         this.prio = prio;
         this.createdAt = createdAt;
         this.editedAt = editedAt;

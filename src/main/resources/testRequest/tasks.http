@@ -27,7 +27,7 @@ GET localhost:8080/api/tasks/1
 GET localhost:8080/api/tasks/title/programista
 
 ###
-DELETE localhost:8080/api/tasks/2
+DELETE localhost:8080/api/tasks/1
 
 ###
 PUT localhost:8080/api/tasks/3
@@ -47,5 +47,33 @@ Content-Type: application/json
 {
   "name": "WAIT"
 }
+
+### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+###
+GET localhost:8080/api/projects/1
+
+###
+GET localhost:8080/api/projects
+
+###
+POST localhost:8080/api/projects
+Content-Type: application/json
+
+{
+  "title": "OGRuD",
+  "description": "wszystkie zadania w ogrodzie"
+}
+
+###
+PUT localhost:8080/api/projects/4
+Content-Type: application/json
+
+{
+  "title": "OGRÓD",
+  "description": "wszystkie zadania w ogrodzie"
+}
+
+###
+DELETE localhost:8080/api/projects/4
 
 ###

@@ -6,6 +6,6 @@ import lombok.Data;
 class UpdateTaskRequest {
     String title;
     String description;
-    String project;
+    Long projectId;
     int prio;
 }

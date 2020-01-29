@@ -6,7 +6,7 @@ import lombok.Data;
 class CreateTaskRequest {
     String title;
     String description;
-    String project;
+    Long projectId;
     int prio;
     Long tagId;
 }

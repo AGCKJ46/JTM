@@ -28,12 +28,12 @@ public class TasksService {
     private final Clock clock;
 
     // TODO wywalić file
-    public Task addTask(String title, String description, String project, int prio, MultipartFile file) throws IOException {
-        log.info("addTask - title: {}., description: {}, project: {}, prio: {}", title, description, project, prio);
+    public Task addTask(String title, String description, Long projectId, int prio, MultipartFile file) throws IOException {
+        log.info("addTask - title: {}., description: {}, project: {}, prio: {}", title, description, projectId, prio);
         Task task = new Task(
                 title,
                 description,
-                project,
+                projectId,
                 prio,
                 clock.time(),
                 clock.time()
@@ -56,8 +56,8 @@ public class TasksService {
         tasksRepository.save(task);
     }
 
-    public void updateTask(Long id, String title, String description, String project, int prio) {
-        tasksRepository.update(id, title, description, project, prio, clock.time());
+    public void updateTask(Long id, String title, String description, Long projectId, int prio) {
+        tasksRepository.update(id, title, description, projectId, prio, clock.time());
     }
 
     public List<Task> fetchAll() {

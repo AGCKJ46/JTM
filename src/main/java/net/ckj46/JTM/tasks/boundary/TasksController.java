@@ -40,10 +40,11 @@ public class TasksController {
     @PostConstruct
     void init() throws IOException {
         log.info("init");
-        tasksService.addTask("zadanie domowe M2", "1. rozszerzyć obiekt Task 2. pakietowanie", "Kurs Springa", 1, null);
-        tasksService.addTask("youtube od Przemka Bykowskiego", "", "Kurs Springa", 1, null);
-        tasksService.addTask("wymienić zamek w drzwiach do garażu", "", "Dom", 2, null);
-        tasksService.addTask("odnowić prenumeratę Programista","", "Dom", 2, null);
+        tasksService.addTask("zadanie domowe M2", "1. rozszerzyć obiekt Task 2. pakietowanie", 1L, 1, null);
+        tasksService.addTask("youtube od Przemka Bykowskiego", "", 1L, 1, null);
+        tasksService.addTask("wymienić zamek w drzwiach do garażu", "", 2L, 2, null);
+        tasksService.addTask("odnowić prenumeratę Programista","", 2L, 2, null);
+        tasksService.addTask("spłacić kartę","", 3L, 2, null);
 
         // tasksService.addTag(1L, 1L);
         // tasksService.addTag(1L, 2L);
@@ -153,7 +154,7 @@ public class TasksController {
     @PostMapping
     public void addTask(HttpServletResponse response, @RequestBody CreateTaskRequest task) throws IOException {
         log.info("Adding new task: {}", task.toString());
-        tasksService.addTask(task.title, task.description, task.project, task.prio, null);
+        tasksService.addTask(task.title, task.description, task.projectId, task.prio, null);
         response.setStatus(HttpStatus.CREATED.value());
     }
 
@@ -170,7 +171,7 @@ public class TasksController {
     @PutMapping(path = "/{id}")
     public ResponseEntity updateTask(@PathVariable Long id, @RequestBody UpdateTaskRequest task) {
         log.info("Updating a task: {}", id);
-        tasksService.updateTask(id, task.title, task.description, task.project, task.prio);
+        tasksService.updateTask(id, task.title, task.description, task.projectId, task.prio);
         log.error("Task {} is updated!", id);
         return ResponseEntity
                 .noContent()

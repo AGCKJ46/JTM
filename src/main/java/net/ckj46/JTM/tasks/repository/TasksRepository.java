@@ -12,11 +12,11 @@ public interface TasksRepository {
 
     Task fetchById(Long id);
 
-    void update(Long id, String title, String description, String project, int prio, LocalDateTime editedAt);
+    List<Task> findByTitle(String title);
+
+    void update(Long id, String title, String description, Long projectId, int prio, LocalDateTime editedAt);
 
     void deleteById(Long id);
 
     void save(Task task);
-
-    List<Task> findByTitle(String title);
 }

@@ -20,7 +20,7 @@ class TasksCrudRepositoryTest {
     @Test
     public void shouldLoadEntity(){
         // given
-        Task task = new Task("Kupić lodówkę", "", "Dom", 1, clock.time(), clock.time());
+        Task task = new Task("Kupić lodówkę", "", 2L, 1, clock.time(), clock.time());
 
         // when
         tasksRepository.save(task);
@@ -33,7 +33,7 @@ class TasksCrudRepositoryTest {
     @Test
     public void findByTitle(){
         // given
-        Task task = new Task("Kupić lodówkę", "", "Dom", 1, clock.time(), clock.time());
+        Task task = new Task("Kupić lodówkę", "", 2L, 1, clock.time(), clock.time());
 
         // when
         tasksRepository.save(task);
@@ -46,7 +46,7 @@ class TasksCrudRepositoryTest {
     @Test
     public void shouldLoadView(){
         // given
-        Task task = new Task("Kupić lodówkę", "", "Dom", 1, clock.time(), clock.time());
+        Task task = new Task("Kupić lodówkę", "",2L, 1, clock.time(), clock.time());
 
         // when
         tasksRepository.save(task);

@@ -10,17 +10,17 @@ import net.ckj46.JTM.tasks.entity.Task;
 
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
+public
 class TaskResponse {
     private Long id;
     private String title;
     private String description;
-    private String project;
+    private Long projectId;
     private int prio;
     private LocalDateTime createdAt;
     private LocalDateTime editedAt;
@@ -32,7 +32,7 @@ class TaskResponse {
                         task.getId(),
                         task.getTitle(),
                         task.getDescription(),
-                        task.getProject(),
+                        task.getProjectId(),
                         task.getPrio(),
                         task.getCreatedAt(),
                         task.getEditedAt(),

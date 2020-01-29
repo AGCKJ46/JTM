@@ -6,7 +6,7 @@ interface TaskView {
     Long getId();
     String getTitle();
     String getDescription();
-    String getProject();
+    Long getProjectId();
     int getPrio();
     LocalDateTime getCreatedAt();
     LocalDateTime getEditedAt();
