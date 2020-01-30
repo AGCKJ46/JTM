@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.ckj46.JTM.attachments.control.AttachmentService;
 import net.ckj46.JTM.attachments.entity.Attachment;
+import net.ckj46.JTM.projects.control.ProjectsService;
+import net.ckj46.JTM.projects.entity.Project;
 import net.ckj46.JTM.tags.control.TagsService;
 import net.ckj46.JTM.tags.entity.Tag;
 import net.ckj46.JTM.tasks.control.TasksService;
@@ -28,6 +30,7 @@ public class TaskViewController {
     private final TasksService tasksService;
     private final AttachmentService attachmentService;
     private final TagsService tagsService;
+    private final ProjectsService projectsService;
 
     @GetMapping("/")
     public String tasksPage(Model model) {
@@ -70,6 +73,11 @@ public class TaskViewController {
         tags.add(new Tag(""));
         tags.addAll(tagsService.fetchAll());
         model.addAttribute("tags", tags);
+
+        List<Project> projects = new LinkedList<>();
+        projects.add(new Project());
+        projects.addAll(projectsService.fetchAll());
+        model.addAttribute("projects", projects);
 
         return "tasks/addnew";
     }
