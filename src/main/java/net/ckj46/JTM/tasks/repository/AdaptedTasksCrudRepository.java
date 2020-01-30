@@ -28,13 +28,14 @@ public class AdaptedTasksCrudRepository implements TasksRepository {
 
     @Override
     public List<Task> fetchAll() {
-        return StreamSupport.stream(tasksCrudRepository.findAll().spliterator(), false)
+        return StreamSupport
+                .stream(tasksCrudRepository.findAll().spliterator(), false)
                 .collect(toList());
     }
 
     @Override
     public Task fetchById(Long id) {
-        log.info("fetchTaskById - taskId: {}",id);
+        log.info("fetchTaskById - taskId: {}", id);
         Task task = tasksCrudRepository
                 .findById(id)
                 .orElseThrow(() -> new NotFoundException("Cannot find task with id: " + id));
@@ -69,7 +70,9 @@ public class AdaptedTasksCrudRepository implements TasksRepository {
 
     @Override
     public void save(Task task) {
+        log.info("Saving a task: {}", task.toString());
         tasksCrudRepository.save(task);
+        log.info("Task: {} is saved", task.toString());
     }
 
     @Override

@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.ckj46.JTM.attachments.entity.Attachment;
 import net.ckj46.JTM.attachments.repository.AttachmentsRepository;
 import net.ckj46.JTM.attachments.repository.StorageService;
+import net.ckj46.JTM.tasks.entity.Task;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,10 +19,10 @@ public class AttachmentService {
     private final AttachmentsRepository attachmentsRepository;
     private final StorageService storageService;
 
-    public void addAttachment(MultipartFile attachment, Long taskId) throws IOException {
+    public void addAttachment(MultipartFile attachment, Task task) throws IOException {
         log.info("addAttachment: {}", attachment.getOriginalFilename());
-        attachmentsRepository.add(new Attachment(attachment.getOriginalFilename(), taskId));
-        storageService.saveFile(taskId, attachment);
+        attachmentsRepository.add(new Attachment(attachment.getOriginalFilename(), task));
+        storageService.saveFile(task.getId(), attachment);
     }
 
     public void delAttachment(Long attachmentId, String fileName, Long taskId) throws IOException {

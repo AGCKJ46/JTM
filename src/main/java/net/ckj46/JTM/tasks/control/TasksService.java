@@ -36,13 +36,13 @@ public class TasksService {
                 projectId,
                 prio,
                 clock.time(),
-                clock.time()
+                clock.time() // TODO poszukać gdzie nie korzystam z tej klasy
         );
         tasksRepository.add(task);
 
         if (file != null && !file.isEmpty()) {
             storageService.saveFile(task.getId(), file);
-            task.addAttachment(new Attachment(file.getOriginalFilename(), task.getId()));
+            task.addAttachment(new Attachment(file.getOriginalFilename(), task));
             tasksRepository.save(task);
         }
 
@@ -86,8 +86,10 @@ public class TasksService {
         return tasksRepository.fetchById(taskId);
     }
 
-    public void saveTask(Task task) {
+    public void saveTask(Task task){
+        log.info("Saving a task: {}", task.toString());
         tasksRepository.save(task);
+        log.info("Task: {} is saved", task.toString());
     }
 
     public List<Task> findTaskByTitle(String title) {

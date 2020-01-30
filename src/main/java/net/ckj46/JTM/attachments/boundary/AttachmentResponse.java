@@ -12,13 +12,11 @@ public class AttachmentResponse {
     private Long id;
     private String fileName;
     private LocalDateTime createdAt;
-    private Long taskId;
 
     public static AttachmentResponse from(Attachment attachment){
         return new AttachmentResponse(attachment.getId(),
                                         attachment.getFileName(),
-                                        attachment.getCreatedAt(),
-                                        attachment.getTaskId());
+                                        attachment.getCreatedAt());
     }
 
 }

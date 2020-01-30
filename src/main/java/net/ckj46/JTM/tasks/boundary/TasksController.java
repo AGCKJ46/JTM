@@ -142,10 +142,9 @@ public class TasksController {
         log.info("Adding attachment: {} to a task: {}", file.getOriginalFilename(), taskId);
 
         Task task = tasksService.fetchTaskById(taskId);
-        task.addAttachment(new Attachment(file.getOriginalFilename(), taskId));
-        attachmentService.addAttachment(file, task.getId());
-        tasksService.saveTask(task);
+        attachmentService.addAttachment(file, task);
 
+        log.info("Attachment: {} is added to a task: {}", file.getOriginalFilename(), taskId);
         return ResponseEntity
                 .noContent()
                 .build();
@@ -162,6 +161,7 @@ public class TasksController {
     public ResponseEntity deleteTaskById(@PathVariable Long taskId) throws IOException {
         log.info("Deleting a task: {}", taskId);
         tasksService.deleteTaskById(taskId);
+        // TODO co z załącznikami
         log.info("Task: {} is deleted!", taskId);
         return ResponseEntity
                 .noContent()

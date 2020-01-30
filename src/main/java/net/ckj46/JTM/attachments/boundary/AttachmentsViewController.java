@@ -32,7 +32,7 @@ public class AttachmentsViewController {
     @PostMapping("/tasks/{taskId}/attachments/new")
     public String addAttachmentAction(@RequestParam("attachment") MultipartFile attachment, @PathVariable Long taskId) throws IOException {
         log.info("addAttachmentAction: '{}'", attachment.getOriginalFilename());
-        attachmentService.addAttachment(attachment, taskId);
+        attachmentService.addAttachment(attachment, tasksService.fetchTaskById(taskId));
         return "redirect:/tasks/" + taskId + "/attachments";
     }
 

@@ -1,12 +1,15 @@
 package net.ckj46.JTM.attachments.entity;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import net.ckj46.JTM.tasks.entity.Task;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @Table(name = "attachments")
 @Entity
@@ -19,14 +22,15 @@ public class Attachment {
     private String fileName;
     private LocalDateTime createdAt;
 
-    @Column(nullable = false)
-    private Long taskId;
+    @ManyToOne
+    @JoinColumn(name = "taskId", nullable = false)
+    private Task task;
     // Set<Comment> comments = null;
 
-    public Attachment(String fileName, Long tasks) {
+    public Attachment(String fileName, Task task) {
         this.fileName = fileName;
         this.createdAt = LocalDateTime.now();
-        this.taskId = tasks;
+        this.task = task;
         // this.comments = new LinkedHashSet<>();
     }
 

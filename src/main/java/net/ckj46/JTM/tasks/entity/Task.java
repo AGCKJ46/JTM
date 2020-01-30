@@ -1,7 +1,8 @@
 package net.ckj46.JTM.tasks.entity;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.ckj46.JTM.attachments.entity.Attachment;
 import net.ckj46.JTM.tags.entity.Tag;
@@ -11,7 +12,8 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Setter
+@Getter
 @Slf4j
 @NoArgsConstructor
 @Table(name = "tasks")
@@ -69,8 +71,9 @@ public class Task {
     }
 
     public void addAttachment(Attachment attachment) {
-        log.info("Attachment: {} is added to task: {}", attachment.getFileName(), id);
+        log.info("Adding attachment: {} to task: {}", attachment.getFileName(), id);
         this.attachments.add(attachment);
+        log.info("Attachment: {} is added to task: {}", attachment.getFileName(), id);
     }
 
     public void addTag(Tag tag) {

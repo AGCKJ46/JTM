@@ -1,7 +1,8 @@
 package net.ckj46.JTM.projects.entity;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.ckj46.JTM.tasks.entity.Task;
 
@@ -10,7 +11,8 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Setter
+@Getter
 @Slf4j
 @NoArgsConstructor
 @Table(name = "projects")
