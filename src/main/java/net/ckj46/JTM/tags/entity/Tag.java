@@ -26,4 +26,14 @@ public class Tag {
         this.createdAt = LocalDateTime.now();
         this.editedAt = LocalDateTime.now();
     }
+
+    @Override
+    public String toString() {
+        return "Tag{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", createdAt=" + createdAt +
+                ", editedAt=" + editedAt +
+                '}';
+    }
 }

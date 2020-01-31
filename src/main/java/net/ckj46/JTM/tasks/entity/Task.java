@@ -41,8 +41,7 @@ public class Task {
     private LocalDateTime createdAt;
     private LocalDateTime editedAt;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "taskId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "task")
     private Set<Attachment> attachments = new HashSet<>();
 
     @ManyToMany
@@ -84,5 +83,20 @@ public class Task {
     public void removeTag(Tag tag) {
         log.info("Tag: {} is removed from task: {}", tag.getId(), id);
         this.tags.remove(tag);
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", projectId=" + projectId +
+                ", prio=" + prio +
+                ", createdAt=" + createdAt +
+                ", editedAt=" + editedAt +
+                ", attachments=" + attachments +
+                ", tags=" + tags +
+                '}';
     }
 }

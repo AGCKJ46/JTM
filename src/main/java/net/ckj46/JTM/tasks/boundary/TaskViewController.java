@@ -96,8 +96,9 @@ public class TaskViewController {
 
     @PostMapping("/tasks/{taskId}/delete")
     public String deleteTaskAction(@PathVariable Long taskId) throws IOException {
-        log.info("Task {} is deleting now...", taskId);
+        log.info("Task {} is deleting ...", taskId);
         tasksService.deleteTaskById(taskId);
+        log.info("Task {} is deleted ...", taskId);
         return "redirect:/";
     }
 

@@ -73,12 +73,17 @@ public class TasksService {
     }
 
     public void deleteTaskById(Long taskId) throws IOException {
+        log.info("Task {} is deleting ...", taskId);
         Task task = tasksRepository.fetchById(taskId);
+
         Set<Attachment> attachments = task.getAttachments();
         for (Attachment attachment: attachments) {
             storageService.deleteFile(attachment.getFileName(), taskId);
         }
+
         tasksRepository.deleteById(taskId);
+
+        log.info("Task {} is deleted ...", taskId);
     }
 
     public Task fetchTaskById(Long taskId) {

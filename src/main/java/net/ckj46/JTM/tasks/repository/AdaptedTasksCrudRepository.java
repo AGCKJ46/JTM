@@ -61,11 +61,15 @@ public class AdaptedTasksCrudRepository implements TasksRepository {
 
     @Override
     public void deleteById(Long id) {
+        log.info("Task {} is deleting ...", id);
+
         tasksCrudRepository
                 .findById(id)
                 .ifPresentOrElse(task -> tasksCrudRepository.deleteById(task.getId()), () -> {
                     throw new NotFoundException("Cannot find task with id: " + id);
                 });
+
+        log.info("Task {} is deleted ...", id);
     }
 
     @Override
