@@ -33,7 +33,6 @@ import java.util.stream.Collectors;
 @CrossOrigin
 public class TasksController {
     private final TasksService tasksService;
-    private final TagsService tagsService;
     private final AttachmentService attachmentService;
     private final StorageService storageService; // TODO TaskController nie wpowinien bezpośrednio korzystać z StorageService
 
@@ -45,11 +44,6 @@ public class TasksController {
         tasksService.addTask("wymienić zamek w drzwiach do garażu", "", 2L, 2, null);
         tasksService.addTask("odnowić prenumeratę Programista","", 2L, 2, null);
         tasksService.addTask("spłacić kartę","", 3L, 2, null);
-
-        // tasksService.addTag(1L, 1L);
-        // tasksService.addTag(1L, 2L);
-        // tasksService.addTag(2L, 2L);
-        // tasksService.addTag(1L, 4L);
     }
 
     @GetMapping

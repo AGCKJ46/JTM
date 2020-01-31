@@ -30,4 +30,16 @@ public class Project {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "projectId")
     private Set<Task> tasks = new HashSet<>();
+
+    @Override
+    public String toString() {
+        return "Project{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", createdAt=" + createdAt +
+                ", editedAt=" + editedAt +
+                ", tasks=" + tasks +
+                '}';
+    }
 }
