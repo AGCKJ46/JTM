@@ -3,10 +3,9 @@ package net.ckj46.JTM.comments;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import net.ckj46.JTM.app.entity.BaseEntity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Setter
@@ -14,10 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Table(name = "comments")
 @Entity
-public class Comment {
-    @Id
-    private Long id;
-
+public class Comment extends BaseEntity {
     private String text;
     private LocalDateTime createdAt;
     private LocalDateTime editedAt;

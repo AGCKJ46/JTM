@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import net.ckj46.JTM.app.entity.BaseEntity;
 import net.ckj46.JTM.attachments.entity.Attachment;
 import net.ckj46.JTM.tags.entity.Tag;
 
@@ -19,18 +20,14 @@ import java.util.Set;
 @Table(name = "tasks")
 @NamedEntityGraph(
     name = "Task.details",
-    attributeNodes = {
+    attributeNodes = { // definiujemy, które atrybuty chcemy pobierać dodatkowo?
             @NamedAttributeNode("attachments"),
             @NamedAttributeNode("tags")
     }
 )
 
 @Entity
-public class Task {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class Task extends BaseEntity {
     private String title;
     private String description;
 
@@ -70,33 +67,32 @@ public class Task {
     }
 
     public void addAttachment(Attachment attachment) {
-        log.info("Adding attachment: {} to task: {}", attachment.getFileName(), id);
+        log.info("Adding attachment: {} to task: {}", attachment.getFileName(), super.getId());
         this.attachments.add(attachment);
-        log.info("Attachment: {} is added to task: {}", attachment.getFileName(), id);
+        log.info("Attachment: {} is added to task: {}", attachment.getFileName(), super.getId());
     }
 
     public void addTag(Tag tag) {
-        log.info("Tag: {} is added to task: {}", tag.getId(), id);
+        log.info("Tag: {} is added to task: {}", tag.getId(), super.getId());
         this.tags.add(tag);
     }
 
     public void removeTag(Tag tag) {
-        log.info("Tag: {} is removed from task: {}", tag.getId(), id);
+        log.info("Tag: {} is removed from task: {}", tag.getId(), super.getId());
         this.tags.remove(tag);
     }
 
     @Override
     public String toString() {
         return "Task{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
+                "title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", projectId=" + projectId +
                 ", prio=" + prio +
                 ", createdAt=" + createdAt +
                 ", editedAt=" + editedAt +
-                ", attachments=" + attachments +
+                // ", attachments=" + attachments +
                 ", tags=" + tags +
-                '}';
+                "} " + super.toString();
     }
 }

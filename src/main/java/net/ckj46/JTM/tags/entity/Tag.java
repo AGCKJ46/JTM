@@ -3,6 +3,7 @@ package net.ckj46.JTM.tags.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import net.ckj46.JTM.app.entity.BaseEntity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,11 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Table(name = "tags")
 @Entity
-public class Tag {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class Tag extends BaseEntity {
     private String name;
     private LocalDateTime createdAt;
     private LocalDateTime editedAt;
@@ -30,10 +27,10 @@ public class Tag {
     @Override
     public String toString() {
         return "Tag{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", createdAt=" + createdAt +
                 ", editedAt=" + editedAt +
-                '}';
+                "} " + super.toString();
     }
 }
+

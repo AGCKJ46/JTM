@@ -3,6 +3,7 @@ package net.ckj46.JTM.attachments.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import net.ckj46.JTM.app.entity.BaseEntity;
 import net.ckj46.JTM.tasks.entity.Task;
 
 import javax.persistence.*;
@@ -13,12 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Table(name = "attachments")
 @Entity
-public class Attachment {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class Attachment extends BaseEntity {
     private String fileName;
     private LocalDateTime createdAt;
 
@@ -34,5 +30,13 @@ public class Attachment {
         // this.comments = new LinkedHashSet<>();
     }
 
-// void addComment(String textComment){comments.add(new Comment());}
+    @Override
+    public String toString() {
+        return "Attachment{" +
+                "fileName='" + fileName + '\'' +
+                ", createdAt=" + createdAt +
+                ", task=" + task +
+                "} " + super.toString();
+    }
+    // void addComment(String textComment){comments.add(new Comment());}
 }
