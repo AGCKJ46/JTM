@@ -1,9 +1,11 @@
-POST {{api}}/tasks
+POST localhost:8080/api/tasks
 Content-Type: application/json
 
 {
   "title": "zadanie domowe M3",
-  "project": "Kurs Springa",
+  "description": "nie pamiętam",
+  "projectId": 1,
+  "tagId": 3,
   "prio": 1
 }
 

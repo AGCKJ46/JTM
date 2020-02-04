@@ -28,7 +28,7 @@ public class TasksService {
     private final Clock clock;
 
     // TODO wywalić file
-    public Task addTask(String title, String description, Long projectId, int prio, MultipartFile file) throws IOException {
+    public Task addTask(String title, String description, Long projectId, int prio) throws IOException {
         log.info("addTask - title: {}., description: {}, project: {}, prio: {}", title, description, projectId, prio);
         Task task = new Task(
                 title,
@@ -39,12 +39,6 @@ public class TasksService {
                 clock.time() // TODO poszukać gdzie nie korzystam z tej klasy
         );
         tasksRepository.add(task);
-
-        if (file != null && !file.isEmpty()) {
-            storageService.saveFile(task.getId(), file);
-            task.addAttachment(new Attachment(file.getOriginalFilename(), task));
-            tasksRepository.save(task);
-        }
 
         return task;
     }

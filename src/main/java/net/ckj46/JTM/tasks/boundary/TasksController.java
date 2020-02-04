@@ -39,11 +39,11 @@ public class TasksController {
     @PostConstruct
     void init() throws IOException {
         log.info("init");
-        tasksService.addTask("zadanie domowe M2", "1. rozszerzyć obiekt Task 2. pakietowanie", 1L, 1, null);
-        tasksService.addTask("youtube od Przemka Bykowskiego", "", 1L, 1, null);
-        tasksService.addTask("wymienić zamek w drzwiach do garażu", "", 2L, 2, null);
-        tasksService.addTask("odnowić prenumeratę Programista","", 2L, 2, null);
-        tasksService.addTask("spłacić kartę","", 3L, 2, null);
+        tasksService.addTask("zadanie domowe M2", "1. rozszerzyć obiekt Task 2. pakietowanie", 1L, 1);
+        tasksService.addTask("youtube od Przemka Bykowskiego", "", 1L, 1);
+        tasksService.addTask("wymienić zamek w drzwiach do garażu", "", 2L, 2);
+        tasksService.addTask("odnowić prenumeratę Programista","", 2L, 2);
+        tasksService.addTask("spłacić kartę","", 3L, 2);
     }
 
     @GetMapping
@@ -147,7 +147,7 @@ public class TasksController {
     @PostMapping
     public void addTask(HttpServletResponse response, @RequestBody CreateTaskRequest task) throws IOException {
         log.info("Adding new task: {}", task.toString());
-        tasksService.addTask(task.title, task.description, task.projectId, task.prio, null);
+        tasksService.addTask(task.title, task.description, task.projectId, task.prio);
         response.setStatus(HttpStatus.CREATED.value());
     }
 
