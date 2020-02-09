@@ -4,18 +4,18 @@ Content-Type: application/json
 {
   "title": "zadanie domowe M3",
   "description": "nie pamiętam",
-  "projectId": 1,
+  "projectTitle": "KURS SPRINGA",
   "tagId": 3,
   "prio": 1
 }
 
 ###
-POST {{api}}/tasks
+POST localhost:8080/api/tasks
 Content-Type: application/json
 
 {
   "title": "wentylacja garażu",
-  "project": "Dom",
+  "projectTitle": "DOM",
   "prio": 1
 }
 
@@ -32,13 +32,13 @@ GET localhost:8080/api/tasks/title/programista
 DELETE localhost:8080/api/tasks/1
 
 ###
-PUT localhost:8080/api/tasks/3
+PUT localhost:8080/api/tasks/1
 Content-Type: application/json
 
 {
   "title": "youtube od Przemka Bykowskiego",
   "description": "dwa kursy - jeden dotyczy SpringBoot'a a drugi Springa",
-  "project": "Kurs Springa",
+  "projectTitle": "DOM",
   "prio": 1
 }
 

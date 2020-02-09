@@ -7,6 +7,7 @@ import net.ckj46.JTM.attachments.control.AttachmentService;
 import net.ckj46.JTM.attachments.entity.Attachment;
 import net.ckj46.JTM.attachments.repository.StorageService;
 import net.ckj46.JTM.projects.control.ProjectsService;
+import net.ckj46.JTM.projects.entity.Project;
 import net.ckj46.JTM.tags.control.TagsService;
 import net.ckj46.JTM.tasks.control.TasksService;
 import net.ckj46.JTM.tasks.entity.Task;
@@ -150,9 +151,9 @@ public class TasksController {
     @PostMapping
     public void addTask(HttpServletResponse response, @RequestBody CreateTaskRequest task) throws IOException {
         log.info("Adding new task: {}", task.toString());
-        // tasksService.addTask(task.title, task.description, task.projectId, task.prio);
-        throw new IllegalArgumentException();
-        // response.setStatus(HttpStatus.CREATED.value());
+        Project project = projectsService.findByTitle(task.projectTitle);
+        tasksService.addTask(task.title, task.description, task.prio, project);
+        response.setStatus(HttpStatus.CREATED.value());
     }
 
     @DeleteMapping(path = "/{taskId}")
@@ -169,9 +170,9 @@ public class TasksController {
     @PutMapping(path = "/{id}")
     public ResponseEntity updateTask(@PathVariable Long id, @RequestBody UpdateTaskRequest task) {
         log.info("Updating a task: {}", id);
-        // tasksService.updateTask(id, task.title, task.description, task.projectId, task.prio);
-        throw new IllegalArgumentException();
-        // log.error("Task {} is updated!", id);
-        // return ResponseEntity.noContent().build();
+        Project project = projectsService.findByTitle(task.projectTitle);
+        tasksService.updateTask(id, task.title, task.description, task.prio, project);
+        log.info("Task {} is updated!", id);
+        return ResponseEntity.noContent().build();
     }
 }

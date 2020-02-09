@@ -85,7 +85,7 @@ public class TaskViewController {
     @PostMapping("/tasks/new")
     public String addTaskAction(@ModelAttribute("newTask") CreateTaskRequest request) throws IOException {
         log.info("New task is adding now...");
-        Project project = projectsService.fetchProjectById(request.projectId);
+        Project project = projectsService.findByTitle(request.projectTitle);
 
         Task task = tasksService.addTask(request.title, request.description, request.prio, project);
 
