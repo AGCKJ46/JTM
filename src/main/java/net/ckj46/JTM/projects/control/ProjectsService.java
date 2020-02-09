@@ -11,12 +11,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
-@Service
 @RequiredArgsConstructor
+@Service
 public class ProjectsService {
     private final ProjectsRepository projectsRepository;
 
-    public void addProject(String title, String description) {
+    public Project addProject(String title, String description) {
         log.info("Adding project...");
         Project project = new Project();
         project.setTitle(title);
@@ -26,6 +26,8 @@ public class ProjectsService {
 
         projectsRepository.save(project);
         log.info("Project is added");
+
+        return project;
     }
 
     public Project fetchProjectById(Long id) {
@@ -53,9 +55,14 @@ public class ProjectsService {
         log.info("Project is updated");
     }
 
-    public void deleteTaskById(Long projectId) {
+    public void deleteProjectById(Long projectId) {
         log.info("Deleting project: {}", projectId);
         projectsRepository.deleteById(projectId);
         log.info("Project is deleted");
+    }
+
+    public Project findByTitle(String title) {
+        log.info("finding project by title: {}", title);
+        return projectsRepository.findByTitle(title).get();
     }
 }

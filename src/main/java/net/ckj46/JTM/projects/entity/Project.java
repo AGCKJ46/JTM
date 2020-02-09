@@ -26,9 +26,13 @@ public class Project extends BaseEntity {
     private LocalDateTime createdAt;
     private LocalDateTime editedAt;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "projectId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
     private Set<Task> tasks = new HashSet<>();
+
+    public Project(String title, String description) {
+        this.title = title;
+        this.description = description;
+    }
 
     @Override
     public String toString() {
@@ -37,7 +41,7 @@ public class Project extends BaseEntity {
                 ", description='" + description + '\'' +
                 ", createdAt=" + createdAt +
                 ", editedAt=" + editedAt +
-                ", tasks=" + tasks +
+                // ", tasks=" + tasks +
                 "} " + super.toString();
     }
 }

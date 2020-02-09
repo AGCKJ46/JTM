@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.StreamSupport;
 
 import static java.util.stream.Collectors.toList;
@@ -45,5 +46,11 @@ public class AdaptedProjectsCrudRepository implements ProjectsRepository {
     public void save(Project project) {
         log.info("save - project: {}",project.toString());
         projectsCrudRepository.save(project);
+    }
+
+    @Override
+    public Optional<Project> findByTitle(String title) {
+        log.info("finding project by title: {}", title);
+        return projectsCrudRepository.findByTitle(title);
     }
 }

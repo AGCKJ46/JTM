@@ -25,6 +25,7 @@ public class TagsControler {
         log.info("init");
         tagsService.addTag("WAIT");
         tagsService.addTag("FIN");
+        tagsService.addTag("KURS");
         // INSERT INTO tags_tasks VALUES (1, 4);
     }
 

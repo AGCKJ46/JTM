@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.ckj46.JTM.app.entity.BaseEntity;
 import net.ckj46.JTM.attachments.entity.Attachment;
+import net.ckj46.JTM.projects.entity.Project;
 import net.ckj46.JTM.tags.entity.Tag;
 
 import javax.persistence.*;
@@ -31,8 +32,9 @@ public class Task extends BaseEntity {
     private String title;
     private String description;
 
-    @Column(nullable = false)
-    private Long projectId;
+    @ManyToOne
+    @JoinColumn(name = "projectId", nullable = false)
+    private Project project;
 
     private int prio;
     private LocalDateTime createdAt;
@@ -41,7 +43,7 @@ public class Task extends BaseEntity {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "task")
     private Set<Attachment> attachments = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST} )
     @JoinTable(
             name = "tags_tasks",
             joinColumns = @JoinColumn(name = "task_id"),
@@ -49,13 +51,13 @@ public class Task extends BaseEntity {
     )
     private Set<Tag> tags = new HashSet<>();
 
-    public Task(String title, String description, Long projectId, int prio, LocalDateTime createdAt, LocalDateTime editedAt) {
+    public Task(String title, String description, int prio, LocalDateTime createdAt, LocalDateTime editedAt, Project project) {
         this.title = title;
         this.description = description;
-        this.projectId = projectId;
         this.prio = prio;
         this.createdAt = createdAt;
         this.editedAt = editedAt;
+        this.project = project;
     }
 
     public Set<Attachment> getAttachments() {
@@ -87,7 +89,7 @@ public class Task extends BaseEntity {
         return "Task{" +
                 "title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", projectId=" + projectId +
+                ", project=" + project.toString() +
                 ", prio=" + prio +
                 ", createdAt=" + createdAt +
                 ", editedAt=" + editedAt +

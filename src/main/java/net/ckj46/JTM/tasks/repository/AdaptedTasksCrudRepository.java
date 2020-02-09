@@ -3,6 +3,7 @@ package net.ckj46.JTM.tasks.repository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.ckj46.JTM.app.exceptions.NotFoundException;
+import net.ckj46.JTM.projects.entity.Project;
 import net.ckj46.JTM.tasks.entity.Task;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
@@ -43,13 +44,13 @@ public class AdaptedTasksCrudRepository implements TasksRepository {
     }
 
     @Override
-    public void update(Long id, String title, String description, Long projectId, int prio, LocalDateTime editedAt) {
+    public void update(Long id, String title, String description, int prio, LocalDateTime editedAt, Project project) {
         tasksCrudRepository
                 .findById(id)
                 .map(task -> {
                     task.setTitle(title);
                     task.setDescription(description);
-                    task.setProjectId(projectId);
+                    task.setProject(project);
                     task.setPrio(prio);
                     task.setEditedAt(editedAt);
                     return task;

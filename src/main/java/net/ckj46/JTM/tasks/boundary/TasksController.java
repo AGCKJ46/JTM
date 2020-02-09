@@ -6,6 +6,7 @@ import net.ckj46.JTM.app.exceptions.NotFoundException;
 import net.ckj46.JTM.attachments.control.AttachmentService;
 import net.ckj46.JTM.attachments.entity.Attachment;
 import net.ckj46.JTM.attachments.repository.StorageService;
+import net.ckj46.JTM.projects.control.ProjectsService;
 import net.ckj46.JTM.tags.control.TagsService;
 import net.ckj46.JTM.tasks.control.TasksService;
 import net.ckj46.JTM.tasks.entity.Task;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
@@ -32,6 +34,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @CrossOrigin
 public class TasksController {
+    private final ProjectsService projectsService;
     private final TasksService tasksService;
     private final AttachmentService attachmentService;
     private final StorageService storageService; // TODO TaskController nie wpowinien bezpośrednio korzystać z StorageService
@@ -39,11 +42,11 @@ public class TasksController {
     @PostConstruct
     void init() throws IOException {
         log.info("init");
-        tasksService.addTask("zadanie domowe M2", "1. rozszerzyć obiekt Task 2. pakietowanie", 1L, 1);
-        tasksService.addTask("youtube od Przemka Bykowskiego", "", 1L, 1);
-        tasksService.addTask("wymienić zamek w drzwiach do garażu", "", 2L, 2);
-        tasksService.addTask("odnowić prenumeratę Programista","", 2L, 2);
-        tasksService.addTask("spłacić kartę","", 3L, 2);
+        tasksService.addTask("zadanie domowe M2", "1. rozszerzyć obiekt Task 2. pakietowanie", 1, projectsService.findByTitle("KURS SPRINGA"));
+        tasksService.addTask("youtube od Przemka Bykowskiego", "", 1, projectsService.findByTitle("KURS SPRINGA"));
+        tasksService.addTask("wymienić zamek w drzwiach do garażu", "", 2, projectsService.findByTitle("DOM"));
+        tasksService.addTask("odnowić prenumeratę Programista","", 2, projectsService.findByTitle("FINANSE"));
+        tasksService.addTask("spłacić kartę","", 1, projectsService.findByTitle("FINANSE"));
     }
 
     @GetMapping
@@ -147,8 +150,9 @@ public class TasksController {
     @PostMapping
     public void addTask(HttpServletResponse response, @RequestBody CreateTaskRequest task) throws IOException {
         log.info("Adding new task: {}", task.toString());
-        tasksService.addTask(task.title, task.description, task.projectId, task.prio);
-        response.setStatus(HttpStatus.CREATED.value());
+        // tasksService.addTask(task.title, task.description, task.projectId, task.prio);
+        throw new IllegalArgumentException();
+        // response.setStatus(HttpStatus.CREATED.value());
     }
 
     @DeleteMapping(path = "/{taskId}")
@@ -165,10 +169,9 @@ public class TasksController {
     @PutMapping(path = "/{id}")
     public ResponseEntity updateTask(@PathVariable Long id, @RequestBody UpdateTaskRequest task) {
         log.info("Updating a task: {}", id);
-        tasksService.updateTask(id, task.title, task.description, task.projectId, task.prio);
-        log.error("Task {} is updated!", id);
-        return ResponseEntity
-                .noContent()
-                .build();
+        // tasksService.updateTask(id, task.title, task.description, task.projectId, task.prio);
+        throw new IllegalArgumentException();
+        // log.error("Task {} is updated!", id);
+        // return ResponseEntity.noContent().build();
     }
 }

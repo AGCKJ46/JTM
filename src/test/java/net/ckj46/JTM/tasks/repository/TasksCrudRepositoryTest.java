@@ -2,42 +2,63 @@ package net.ckj46.JTM.tasks.repository;
 
 import net.ckj46.JTM.app.sys.Clock;
 import net.ckj46.JTM.app.sys.SystemClock;
+import net.ckj46.JTM.projects.control.ProjectsService;
+import net.ckj46.JTM.projects.entity.Project;
+import net.ckj46.JTM.projects.repository.ProjectsCrudRepository;
 import net.ckj46.JTM.tasks.entity.Task;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.repository.CrudRepository;
+
 import java.util.List;
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-class TasksCrudRepositoryTest {
-
+public class TasksCrudRepositoryTest {
     private Clock clock = new SystemClock();
 
+    @Autowired
+    private ProjectsCrudRepository projectsRepository;
     @Autowired
     private TasksCrudRepository tasksRepository;
 
     @Test
     public void shouldLoadEntity(){
         // given
-        Task task = new Task("Kupić lodówkę", "", 2L, 1, clock.time(), clock.time());
+        projectsRepository.save(new Project("TEST_PROJECT1","Project testowy"));
+        Optional<Project> project = projectsRepository.findByTitle("TEST_PROJECT1");
+        Task task1 = new Task("Test Task 1", "", 1, clock.time(), clock.time(), project.get());
+        Task task2 = new Task("Test Task 2", "", 1, clock.time(), clock.time(), project.get());
+        Task task3 = new Task("Test Task 3", "", 1, clock.time(), clock.time(), project.get());
 
         // when
-        tasksRepository.save(task);
+        tasksRepository.save(task1);
+        tasksRepository.save(task2);
+        tasksRepository.save(task3);
         List<Task> tasks = tasksRepository.findAll();
 
         // then
-        assertThat(tasks.size()).isEqualTo(1);
+        assertThat(tasks.size()).isEqualTo(3);
     }
 
     @Test
     public void findByTitle(){
         // given
-        Task task = new Task("Kupić lodówkę", "", 2L, 1, clock.time(), clock.time());
+        projectsRepository.save(new Project("TEST_PROJECT1","Project testowy"));
+        Optional<Project> project = projectsRepository.findByTitle("TEST_PROJECT1");
+        Task task1 = new Task("Test Task 1", "", 1, clock.time(), clock.time(), project.get());
+        Task task2 = new Task("Test Task 2", "", 1, clock.time(), clock.time(), project.get());
+        Task task3 = new Task("Test Task 3", "", 1, clock.time(), clock.time(), project.get());
 
         // when
-        tasksRepository.save(task);
-        List<Task> tasks = tasksRepository.findByTitle("Kupić lodówkę");
+        tasksRepository.save(task1);
+        tasksRepository.save(task2);
+        tasksRepository.save(task3);
+        List<Task> tasks = tasksRepository.findByTitle("Test Task 1");
 
         // then
         assertThat(tasks.size()).isEqualTo(1);
@@ -46,7 +67,9 @@ class TasksCrudRepositoryTest {
     @Test
     public void shouldLoadView(){
         // given
-        Task task = new Task("Kupić lodówkę", "",2L, 1, clock.time(), clock.time());
+        projectsRepository.save(new Project("TEST_PROJECT1","Project testowy"));
+        Optional<Project> project = projectsRepository.findByTitle("TEST_PROJECT1");
+        Task task = new Task("Test Task 1", "", 1, clock.time(), clock.time(), project.get());
 
         // when
         tasksRepository.save(task);
@@ -54,6 +77,6 @@ class TasksCrudRepositoryTest {
 
         // then
         assertThat(taskView.size()).isEqualTo(1);
-        assertThat(taskView.get(0).getTitle()).isEqualToIgnoringCase("Kupić lodówkę");
+        assertThat(taskView.get(0).getTitle()).isEqualToIgnoringCase("Test Task 1");
     }
 }

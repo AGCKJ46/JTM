@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import net.ckj46.JTM.attachments.boundary.AttachmentResponse;
 import net.ckj46.JTM.attachments.entity.Attachment;
+import net.ckj46.JTM.projects.entity.Project;
 import net.ckj46.JTM.tags.boundary.TagsResponse;
 import net.ckj46.JTM.tags.entity.Tag;
 import net.ckj46.JTM.tasks.entity.Task;
@@ -20,7 +21,7 @@ class TaskResponse {
     private Long id;
     private String title;
     private String description;
-    private Long projectId;
+    private Project project;
     private int prio;
     private LocalDateTime createdAt;
     private LocalDateTime editedAt;
@@ -32,7 +33,7 @@ class TaskResponse {
                         task.getId(),
                         task.getTitle(),
                         task.getDescription(),
-                        task.getProjectId(),
+                        task.getProject(),
                         task.getPrio(),
                         task.getCreatedAt(),
                         task.getEditedAt(),

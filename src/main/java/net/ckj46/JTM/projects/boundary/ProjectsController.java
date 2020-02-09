@@ -27,9 +27,9 @@ public class ProjectsController {
     @PostConstruct
     void init() throws IOException {
         log.info("init");
+        projectsService.addProject("FINANSE", "");
         projectsService.addProject("KURS SPRINGA", "");
         projectsService.addProject("DOM", "wszystkie zadania związane z naprawami, remontami w domu");
-        projectsService.addProject("FIN", "");
     }
 
     @PostMapping
@@ -100,7 +100,7 @@ public class ProjectsController {
     @DeleteMapping(path = "/{id}")
     public ResponseEntity getDeleteById(@PathVariable Long id){
         log.info("Deleting a project: {}", id);
-        projectsService.deleteTaskById(id);
+        projectsService.deleteProjectById(id);
         log.info("Project: {} is deleted!", id);
         return ResponseEntity
                 .noContent()

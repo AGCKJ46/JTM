@@ -2,14 +2,17 @@ package net.ckj46.JTM.tasks.control;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.ckj46.JTM.app.exceptions.NotFoundException;
 import net.ckj46.JTM.app.sys.Clock;
 import net.ckj46.JTM.attachments.entity.Attachment;
 import net.ckj46.JTM.attachments.repository.StorageService;
+import net.ckj46.JTM.projects.entity.Project;
 import net.ckj46.JTM.tags.entity.Tag;
 import net.ckj46.JTM.tags.repository.TagsRepository;
 import net.ckj46.JTM.tasks.entity.Task;
 import net.ckj46.JTM.tasks.repository.TasksRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -27,19 +30,17 @@ public class TasksService {
 
     private final Clock clock;
 
-    // TODO wywalić file
-    public Task addTask(String title, String description, Long projectId, int prio) throws IOException {
-        log.info("addTask - title: {}., description: {}, project: {}, prio: {}", title, description, projectId, prio);
+    public Task addTask(String title, String description, int prio, Project project){
+        log.info("addTask - title: {}., description: {}, prio: {}, project: {}", title, description, prio, project.getTitle());
         Task task = new Task(
                 title,
                 description,
-                projectId,
                 prio,
                 clock.time(),
-                clock.time() // TODO poszukać gdzie nie korzystam z tej klasy
+                clock.time(), // TODO poszukać gdzie nie korzystam z tej klasy
+                project
         );
         tasksRepository.add(task);
-
         return task;
     }
 
@@ -50,8 +51,8 @@ public class TasksService {
         tasksRepository.save(task);
     }
 
-    public void updateTask(Long id, String title, String description, Long projectId, int prio) {
-        tasksRepository.update(id, title, description, projectId, prio, clock.time());
+    public void updateTask(Long id, String title, String description, int prio, Project project) {
+        tasksRepository.update(id, title, description, prio, clock.time(), project);
     }
 
     public List<Task> fetchAll() {

@@ -1,5 +1,6 @@
 package net.ckj46.JTM.tasks.repository;
 
+import net.ckj46.JTM.projects.entity.Project;
 import net.ckj46.JTM.tasks.entity.Task;
 
 import java.time.LocalDateTime;
@@ -14,7 +15,7 @@ public interface TasksRepository {
 
     List<Task> findByTitle(String title);
 
-    void update(Long id, String title, String description, Long projectId, int prio, LocalDateTime editedAt);
+    void update(Long id, String title, String description, int prio, LocalDateTime editedAt, Project project);
 
     void deleteById(Long id);
 

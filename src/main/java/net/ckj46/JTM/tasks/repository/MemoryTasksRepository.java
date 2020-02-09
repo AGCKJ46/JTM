@@ -2,6 +2,7 @@ package net.ckj46.JTM.tasks.repository;
 
 import net.ckj46.JTM.app.exceptions.NotFoundException;
 import net.ckj46.JTM.attachments.repository.StorageService;
+import net.ckj46.JTM.projects.entity.Project;
 import net.ckj46.JTM.tasks.entity.Task;
 import org.springframework.stereotype.Repository;
 
@@ -42,13 +43,13 @@ public class MemoryTasksRepository implements TasksRepository {
     }
 
     @Override
-    public void update(Long id, String title, String description, Long projectId, int prio, LocalDateTime editedAt) {
+    public void update(Long id, String title, String description, int prio, LocalDateTime editedAt, Project project) {
         Task task = findById(id)
                 .orElseThrow(() -> new NotFoundException("Task with id: " + id + " not found!"));
 
         task.setTitle(title);
         task.setDescription(description);
-        task.setProjectId(projectId);
+        task.setProject(project);
         task.setPrio(prio);
         task.setEditedAt(editedAt);
     }
