@@ -1,7 +1,6 @@
 package net.ckj46.JTM.imports.control;
 
 import lombok.extern.slf4j.Slf4j;
-import net.ckj46.JTM.app.exceptions.NotFoundException;
 import net.ckj46.JTM.imports.boundary.ImportProject;
 import net.ckj46.JTM.imports.boundary.ImportTask;
 import net.ckj46.JTM.projects.control.ProjectsService;
@@ -17,13 +16,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Slf4j
 class ImportServiceTest {
     @Autowired
-    ProjectsService projectsService;
+    private ProjectsService projectsService;
 
     @Autowired
-    TasksService tasksService;
+    private TasksService tasksService;
 
     @Autowired
-    ImportService importService;
+    private ImportService importService;
 
     @Test
     public void shouldImportEntities() {

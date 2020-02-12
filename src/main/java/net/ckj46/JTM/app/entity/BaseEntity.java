@@ -3,10 +3,7 @@ package net.ckj46.JTM.app.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
@@ -20,6 +17,9 @@ public abstract class BaseEntity implements Serializable {
     private Long id;
 
     private String uuid = UUID.randomUUID().toString();
+
+    @Version
+    private Long version;
 
     @Override
     public int hashCode() {
@@ -36,6 +36,7 @@ public abstract class BaseEntity implements Serializable {
         return "BaseEntity{" +
                 "id=" + id +
                 ", uuid='" + uuid + '\'' +
+                ", version=" + version +
                 '}';
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 import java.util.Optional;
 
-interface TasksCrudRepository extends JpaRepository<Task, Long> {
+public interface TasksCrudRepository extends JpaRepository<Task, Long> {
 
     @EntityGraph(value = "Task.details", type = EntityGraph.EntityGraphType.LOAD)
     List<Task> findAll();

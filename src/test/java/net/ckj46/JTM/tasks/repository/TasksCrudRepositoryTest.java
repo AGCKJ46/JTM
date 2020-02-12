@@ -1,16 +1,14 @@
 package net.ckj46.JTM.tasks.repository;
 
+import lombok.extern.slf4j.Slf4j;
 import net.ckj46.JTM.app.sys.Clock;
 import net.ckj46.JTM.app.sys.SystemClock;
-import net.ckj46.JTM.projects.control.ProjectsService;
 import net.ckj46.JTM.projects.entity.Project;
 import net.ckj46.JTM.projects.repository.ProjectsCrudRepository;
 import net.ckj46.JTM.tasks.entity.Task;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +16,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
+@Slf4j
 public class TasksCrudRepositoryTest {
     private Clock clock = new SystemClock();
 
