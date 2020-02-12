@@ -8,12 +8,15 @@ import net.ckj46.JTM.app.entity.BaseEntity;
 import net.ckj46.JTM.attachments.entity.Attachment;
 import net.ckj46.JTM.projects.entity.Project;
 import net.ckj46.JTM.tags.entity.Tag;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Setter
 @Getter
 @Slf4j
@@ -26,7 +29,6 @@ import java.util.Set;
             @NamedAttributeNode("tags")
     }
 )
-
 @Entity
 public class Task extends BaseEntity {
     private String title;
@@ -40,6 +42,7 @@ public class Task extends BaseEntity {
     private LocalDateTime createdAt;
     private LocalDateTime editedAt;
 
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "task")
     private Set<Attachment> attachments = new HashSet<>();
 
@@ -49,6 +52,7 @@ public class Task extends BaseEntity {
             joinColumns = @JoinColumn(name = "task_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<Tag> tags = new HashSet<>();
 
     public Task(String title, String description, int prio, LocalDateTime createdAt, LocalDateTime editedAt, Project project) {

@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.ckj46.JTM.app.entity.BaseEntity;
 import net.ckj46.JTM.tasks.entity.Task;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,10 +15,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Table(name = "attachments")
 @Entity
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Attachment extends BaseEntity {
     private String fileName;
     private LocalDateTime createdAt;
 
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @ManyToOne
     @JoinColumn(name = "taskId", nullable = false)
     private Task task;
