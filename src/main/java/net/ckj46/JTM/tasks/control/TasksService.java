@@ -16,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -95,5 +97,14 @@ public class TasksService {
     public List<Task> findTaskByTitle(String title) {
         log.info("findTaskByTitle - title: {}", title);
         return tasksRepository.findByTitle(title);
+    }
+
+    public List<Task> getTaskWithPrio(int prio) {
+        List<Task> tasks = new LinkedList<>();
+        tasks = tasksRepository.fetchAll()
+                .stream()
+                .filter(t->t.getPrio()==prio)
+                .collect(Collectors.toList());
+        return tasks;
     }
 }

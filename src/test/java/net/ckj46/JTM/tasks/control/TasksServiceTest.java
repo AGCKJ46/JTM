@@ -1,43 +1,79 @@
 package net.ckj46.JTM.tasks.control;
 
-import lombok.extern.slf4j.Slf4j;
-import net.ckj46.JTM.projects.control.ProjectsService;
+import net.ckj46.JTM.app.sys.Clock;
+import net.ckj46.JTM.app.sys.SystemClock;
+import net.ckj46.JTM.attachments.repository.StorageService;
 import net.ckj46.JTM.projects.entity.Project;
+import net.ckj46.JTM.tags.repository.TagsRepository;
 import net.ckj46.JTM.tasks.entity.Task;
+import net.ckj46.JTM.tasks.repository.TasksRepository;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import org.mockito.Mockito;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
-@SpringBootTest
-@Slf4j
+// @SpringBootTest
 class TasksServiceTest {
-    @Autowired
     private TasksService tasksService;
 
-    @Autowired
-    private ProjectsService projectsService;
+    private TasksRepository tasksRepository = Mockito.mock(TasksRepository.class);
+    private StorageService storageService = Mockito.mock(StorageService.class);
+    private TagsRepository tagsRepository = Mockito.mock(TagsRepository.class);
+
+    private Clock clock = new SystemClock();
+
+    @BeforeEach
+    public void setupBeforeAll() {
+        tasksService = new TasksService(
+                tasksRepository,
+                storageService,
+                tagsRepository,
+                clock
+        );
+    }
 
     @Test
-    public void entityVersionTest(){
+    public void shouldReturnTasksWithPrio(){
         // given
-        Project project = projectsService.addProject("TEST1", "");
-        Task task = tasksService.addTask("Test Task 1", "", 1, project);
+        Project project = new Project("Test project 1", "Description for test project 1");
+        Task t1 = new Task("Test task 1", "", 1, LocalDateTime.now(), LocalDateTime.now(), project);
+        Task t2 = new Task("Test task 2", "", 2, LocalDateTime.now(), LocalDateTime.now(), project);
+        Task t3 = new Task("Test task 3", "", 1, LocalDateTime.now(), LocalDateTime.now(), project);
+        Task t4 = new Task("Test task 4", "", 2, LocalDateTime.now(), LocalDateTime.now(), project);
+        Task t5 = new Task("Test task 5", "", 1, LocalDateTime.now(), LocalDateTime.now(), project);
 
-        // when
-        Task task1 = tasksService.fetchTaskById(task.getId());
-        Task task2 = tasksService.fetchTaskById(task.getId());
+        Mockito.when(tasksRepository.fetchAll())
+                .thenReturn(Arrays.asList(t1,t3,t5));
 
-        task1.setTitle("new title 1");
-        tasksService.saveTask(task1);
+        //when
+        List<Task> tasks = tasksService.getTaskWithPrio(1);
 
-        task2.setTitle("new title 2");
+        //then
+        Assertions.assertThat(tasks)
+                .containsExactly(t1,t3,t5);
+    }
 
-        // then
-        Exception exception = assertThrows(ObjectOptimisticLockingFailureException.class, () -> {
-            tasksService.saveTask(task2);
-        });
+    @Test
+    public void shouldReturnTaskWithId(){
+        // given
+        Project project = new Project("Test project 1", "Description for test project 1");
+        Task t1 = new Task("Test task 1", "", 1, LocalDateTime.now(), LocalDateTime.now(), project);
+        Task t2 = new Task("Test task 2", "", 2, LocalDateTime.now(), LocalDateTime.now(), project);
+        Task t3 = new Task("Test task 3", "", 1, LocalDateTime.now(), LocalDateTime.now(), project);
+        Task t4 = new Task("Test task 4", "", 2, LocalDateTime.now(), LocalDateTime.now(), project);
+        Task t5 = new Task("Test task 5", "", 1, LocalDateTime.now(), LocalDateTime.now(), project);
+
+        Mockito.when(tasksRepository.fetchById(1L))
+                .thenReturn(t1);
+
+        //when
+        Task task = tasksService.fetchTaskById(1L);
+
+        //then
+        Assertions.assertThat(task.getTitle()).isEqualToIgnoringCase("Test task 1");
     }
 }
