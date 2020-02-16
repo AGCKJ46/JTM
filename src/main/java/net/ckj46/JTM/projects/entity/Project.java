@@ -6,11 +6,13 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.ckj46.JTM.app.entity.BaseEntity;
 import net.ckj46.JTM.tasks.entity.Task;
+import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.*;
-import javax.persistence.JoinColumn;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,7 +22,7 @@ import java.util.Set;
 @Slf4j
 @NoArgsConstructor
 @Table(name = "projects")
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Entity
 public class Project extends BaseEntity {
     private String title;
@@ -28,7 +30,7 @@ public class Project extends BaseEntity {
     private LocalDateTime createdAt;
     private LocalDateTime editedAt;
 
-    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
     private Set<Task> tasks = new HashSet<>();
 
